@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import LandingPage from "./pages/Landing.page";
 import { Route, Switch } from "react-router-dom";

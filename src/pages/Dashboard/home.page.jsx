@@ -11,7 +11,7 @@ function Home() {
 
   const getUser = async () => {
     try {
-      const { data, error, status } = await supabase
+      const { data, error } = await supabase
         .from("users")
         .select("username, avatar_url, email")
         .eq("email", localStorage.getItem("email"))

@@ -6,7 +6,6 @@ import reportWebVitals from "./reportWebVitals";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
-import ProgressBar from "@badrap/bar-of-progress";
 
 ReactDOM.render(
   <React.StrictMode>
