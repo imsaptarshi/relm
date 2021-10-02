@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 import { Box, Flex, Text, Divider, Button } from "@chakra-ui/react";
 import { supabase } from "../../Helpers/supabase";

@@ -28,6 +28,7 @@ function NewCommunity() {
 
   const createCommunity = async (name, description, logo) => {
     if (name.length > 3) {
+      setLogo(logo);
       try {
         setLoading(true);
         const updates = {
