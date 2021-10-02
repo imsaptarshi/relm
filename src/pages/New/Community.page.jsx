@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import { User } from "../../Providers/User.provider";
-import DefaultCommunityLogo from "../../Assets/defaultCommunityLogo.svg";
 import { CheckCircle } from "react-feather";
 import { supabase } from "../../Helpers/supabase";
 

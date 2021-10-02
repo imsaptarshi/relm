@@ -1,4 +1,4 @@
-import { Flex, AspectRatio, Image, Text, Box } from "@chakra-ui/react";
+import { Flex, AspectRatio, Image, Text } from "@chakra-ui/react";
 import { Calendar, Users } from "react-feather";
 
 function CommunityCard({ id, name, description, audience, events, logo }) {

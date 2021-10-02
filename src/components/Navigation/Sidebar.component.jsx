@@ -92,7 +92,7 @@ function Sidebar() {
       : true;
 
     return (
-      <Link to={isEnabled ? link : "#"}>
+      <Link to={isEnabled ? link : "#"} onClick={() => setActive(name)}>
         <Tooltip label={name} display={{ lg: "none" }} placement="right">
           <Flex
             opacity={isEnabled ? "1" : "0.5"}

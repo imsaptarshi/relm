@@ -1,18 +1,14 @@
 import { useEffect, useState } from "react";
-import Logo from "../../Assets/logo.svg";
-import { Box, Flex, Text, Image, Divider, Button } from "@chakra-ui/react";
+import { Box, Flex, Text, Divider, Button } from "@chakra-ui/react";
 import { supabase } from "../../Helpers/supabase";
-import Sidebar from "../../components/Navigation/Sidebar.component";
 import { User } from "../../Providers/User.provider";
-import { Menu, Plus, X } from "react-feather";
-import DefaultCommunityLogo from "../../Assets/defaultCommunityLogo.svg";
+import { Plus } from "react-feather";
 import CommunityCard from "../../components/Cards/CommunityCard.component";
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import { Link } from "react-router-dom";
 
 function Home() {
   const { user, setUser } = User();
-  const [sidebarVisibility, setSidebarVisibility] = useState(false);
   const [communitities, setCommunities] = useState(undefined);
 
   useEffect(() => {
