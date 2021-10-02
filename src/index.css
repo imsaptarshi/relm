@@ -3,3 +3,7 @@
 * {
   font-family: "Red Hat Display", sans-serif;
 }
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}

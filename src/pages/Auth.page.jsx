@@ -33,6 +33,9 @@ function Auth({ session }) {
       if (user) {
         console.log(user);
         setEmail(user.email);
+        if (user.username) {
+          setUsername(user?.username);
+        }
         if (user.user_metadata) {
           setAvatarUrl(user.user_metadata?.avatar_url);
         }
@@ -132,6 +135,7 @@ function Auth({ session }) {
             What do we call you?
           </Text>
           <Input
+            value={username}
             type="text"
             onChange={(e) => {
               setUsername(e.target.value);

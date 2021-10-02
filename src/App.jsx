@@ -5,8 +5,11 @@ import SignIn from "./pages/SignIn.page";
 import Auth from "./pages/Auth.page";
 import { useEffect, useState } from "react";
 import { supabase } from "./Helpers/supabase";
-import Home from "./pages/Dashboard/home.page";
-import NewCommunity from "./pages/New/Community.page";
+import Home from "./pages/Dashboard/Home.page";
+import NewCommunity from "./pages/New/NewCommunity.page";
+import ManageCommunity from "./pages/Manage/ManageCommunity.page";
+import Events from "./pages/Dashboard/Events.page";
+import NewEvent from "./pages/New/NewEvent.page";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -44,6 +47,19 @@ function App() {
         <>
           <Route exact path="/home" component={Home} />
           <Route exact path="/new/community" component={NewCommunity} />
+          <Route
+            exact
+            path="/manage/community/:id"
+            component={ManageCommunity}
+          />
+          <Route exact path="/events" component={Events} />
+          <Route exact path="/new/event" component={NewEvent} />
+          <Route
+            exact
+            path="/manage/community/:id/new/event"
+            component={NewEvent}
+          />
+          <Route exact path="/manage/community/:id/events" component={Events} />
         </>
       ) : (
         () => {

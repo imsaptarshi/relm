@@ -18,6 +18,7 @@ import {
   MenuButton,
   MenuList,
   MenuItem,
+  Skeleton,
   Tooltip,
 } from "@chakra-ui/react";
 import Logo from "../../Assets/logo.svg";
@@ -27,21 +28,45 @@ import { features } from "../../Helpers/features";
 import { User } from "../../Providers/User.provider";
 import { supabase } from "../../Helpers/supabase";
 
-function Sidebar() {
-  const [active, setActive] = useState("Home");
+function Sidebar({ communityId }) {
+  const [active, setActive] = useState(window.location.pathname);
   const { user, setUser } = User();
+  const [community, setCommunity] = useState(undefined);
 
   useEffect(() => {
     if (!user) {
       setUser(JSON.parse(localStorage.getItem("user")));
     }
-  }, [setUser, user]);
+    if (communityId) {
+      getCommunity(communityId);
+    }
+  }, [communityId, setUser, user]);
+
+  const getCommunity = async (id) => {
+    try {
+      console.log(localStorage.getItem("email"));
+      const { data, error } = await supabase
+        .from("communities")
+        .select("id, name, logo ,description,audience,events")
+        .contains("createdBy", [localStorage.getItem("email")])
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setCommunity(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const SidebarItems = [
     {
       name: "Home",
       isExternal: false,
-      link: "/home",
+      link: communityId ? `/manage/community/${communityId}` : "/home",
       Icon: (props) => <Home {...props} />,
     },
     {
@@ -53,7 +78,7 @@ function Sidebar() {
     {
       name: "Events",
       isExternal: false,
-      link: "/events",
+      link: communityId ? `/manage/community/${communityId}/events` : "/events",
       Icon: (props) => {
         return <Calendar {...props} />;
       },
@@ -69,7 +94,7 @@ function Sidebar() {
     {
       name: "Newsletter",
       isExternal: false,
-      link: "/events",
+      link: "#",
       Icon: (props) => {
         return <Mail {...props} />;
       },
@@ -77,12 +102,35 @@ function Sidebar() {
     {
       name: "Explore",
       isExternal: false,
-      link: "/events",
+      link: "#",
       Icon: (props) => {
         return <Heart {...props} />;
       },
     },
   ];
+
+  const CommunityDisplay = ({ name, logo }) => {
+    return (
+      <Flex mb="6" display="flex" alignItems="center" experimental_spaceX="2">
+        <Image
+          src={logo}
+          alt={name}
+          w={{ base: "10", lg: "8" }}
+          h={{ base: "10", lg: "8" }}
+          rounded="full"
+        />
+        <Text
+          whiteSpace="nowrap"
+          color="white"
+          display={{ base: "none", lg: "block" }}
+          fontWeight="bold"
+          fontSize="xl"
+        >
+          {name}
+        </Text>
+      </Flex>
+    );
+  };
 
   const SidebarItem = ({ name, link, Icon }) => {
     const isEnabled = features[name]
@@ -99,13 +147,13 @@ function Sidebar() {
             cursor={isEnabled ? "pointer" : "not-allowed"}
             experimental_spaceX="3"
             fontSize="lg"
-            color={active === name ? "brand.primary" : "white"}
+            color={active === link ? "brand.primary" : "white"}
             alignItems="center"
           >
-            <Icon fill={active === name ? "#FF4085" : "none"} />
+            <Icon fill={active === link ? "#FF4085" : "none"} />
             <Text
               display={{ base: "none", lg: "block" }}
-              fontWeight={active === name ? "bold" : "normal"}
+              fontWeight={active === link ? "bold" : "normal"}
             >
               {name}
             </Text>
@@ -118,6 +166,8 @@ function Sidebar() {
   return (
     <Box>
       <Flex
+        overflowY="auto"
+        overflowX="clip"
         direction="column"
         justify="space-between"
         alignItems={{ base: "center", lg: "start" }}
@@ -130,8 +180,40 @@ function Sidebar() {
         <Box w={{ lg: "full" }}>
           <Image src={Logo} alt="relm" w="10" h="10" />
           <Box px={{ base: "0", lg: "10" }} mt="50px">
+            {communityId ? (
+              community ? (
+                <CommunityDisplay
+                  name={community?.name}
+                  logo={community?.logo}
+                />
+              ) : (
+                <Flex
+                  mb="6"
+                  display="flex"
+                  alignItems="center"
+                  experimental_spaceX="2"
+                >
+                  <Skeleton
+                    w={{ base: "10", lg: "8" }}
+                    h={{ base: "10", lg: "8" }}
+                    rounded="full"
+                  />
+                  <Skeleton rounded="xl" h="6" w="20" />
+                </Flex>
+              )
+            ) : (
+              <></>
+            )}
+
             <Button
-              _hover={{}}
+              onClick={() => {
+                const to = communityId
+                  ? `/manage/community/${communityId}/new/event`
+                  : "/new/event";
+                window.location.href = to;
+              }}
+              _hover={{ bg: "#DD3370" }}
+              transitionDuration="200ms"
               _focus={{}}
               _active={{}}
               size="sm"
@@ -142,7 +224,7 @@ function Sidebar() {
               bg="brand.primary"
             >
               <Text display={{ base: "none", lg: "block" }}>
-                Create an event
+                Create new event
               </Text>
               <Box display={{ base: "block", lg: "none" }}>
                 <Plus />

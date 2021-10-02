@@ -4,7 +4,7 @@ import { useState } from "react";
 import { X, Menu } from "react-feather";
 import Logo from "../../Assets/logo.svg";
 
-function StarterTemplate({ children }) {
+function StarterTemplate({ children, communityId }) {
   const [sidebarVisibility, setSidebarVisibility] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ function StarterTemplate({ children }) {
         zIndex={2}
         display={{ base: sidebarVisibility ? "block" : "none", md: "block" }}
       >
-        <Sidebar />
+        <Sidebar communityId={communityId} />
       </Box>
       <Box
         p={{ base: "8", md: "10" }}
@@ -28,10 +28,10 @@ function StarterTemplate({ children }) {
           justify="space-between"
           mb="4"
           alignItems="center"
-          cursor="pointer"
         >
           <Image src={Logo} alt="relm" w="10" h="10" ml="1" mt="2" />
           <Box
+            cursor="pointer"
             onClick={() => setSidebarVisibility(!sidebarVisibility)}
             rounded="full"
             p="2"

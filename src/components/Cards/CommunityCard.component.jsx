@@ -4,6 +4,9 @@ import { Calendar, Users } from "react-feather";
 function CommunityCard({ id, name, description, audience, events, logo }) {
   return (
     <Flex
+      onClick={() => {
+        window.location.href = `/manage/community/${id}`;
+      }}
       border="1px"
       cursor="pointer"
       mr={{ md: "0", lg: "4" }}
@@ -24,7 +27,7 @@ function CommunityCard({ id, name, description, audience, events, logo }) {
         <Image src={logo} rounded="lg" />
       </AspectRatio>
       <Flex direction="column" justify="space-between">
-        <Text pr="2" fontWeight="semibold" fontSize={{ base: "lg", md: "xl" }}>
+        <Text pr="2" fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>
           {name}
         </Text>
         <Flex experimental_spaceX="2" alignItems="center">
