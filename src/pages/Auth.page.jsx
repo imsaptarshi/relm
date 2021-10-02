@@ -15,6 +15,7 @@ import { supabase } from "../Helpers/supabase";
 
 function Auth({ session }) {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState(null);
   const [avatarUrl, setAvatarUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +32,7 @@ function Auth({ session }) {
 
       if (user) {
         console.log(user);
-        localStorage.setItem("email", user.email);
+        setEmail(user.email);
         if (user.user_metadata) {
           setAvatarUrl(user.user_metadata?.avatar_url);
         }
@@ -52,7 +53,7 @@ function Auth({ session }) {
           id: user.id,
           username,
           avatar_url: avatarUrl,
-          email: localStorage.getItem("email"),
+          email: email,
         };
 
         const { error } = await supabase.from("users").upsert(updates, {
@@ -62,7 +63,7 @@ function Auth({ session }) {
         if (error) {
           throw error;
         }
-        console.log("success");
+        window.localStorage.setItem("email", email);
         window.location.href = "/home";
       } catch (error) {
         toast({

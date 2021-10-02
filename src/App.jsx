@@ -6,6 +6,7 @@ import Auth from "./pages/Auth.page";
 import { useEffect, useState } from "react";
 import { supabase } from "./Helpers/supabase";
 import Home from "./pages/Dashboard/home.page";
+import NewCommunity from "./pages/New/Community.page";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -29,7 +30,7 @@ function App() {
         render={
           !session
             ? () => <LandingPage />
-            : localStorage.getItem("email") === undefined
+            : localStorage.getItem("email")
             ? () => {
                 window.location.href = "/home";
                 return <Home />;
@@ -39,7 +40,17 @@ function App() {
       />
       <Route exact path="/signin" component={SignIn} />
       <Route exact path="/auth" render={() => <Auth session={session} />} />
-      <Route exact path="/home" component={Home} />
+      {localStorage.getItem("email") ? (
+        <>
+          <Route exact path="/home" component={Home} />
+          <Route exact path="/new/community" component={NewCommunity} />
+        </>
+      ) : (
+        () => {
+          window.location.href = "/signin";
+          return <></>;
+        }
+      )}
     </Switch>
   );
 }

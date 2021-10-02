@@ -29,15 +29,6 @@ function SignIn() {
       if (error) {
         throw error;
       }
-
-      toast({
-        title: "Signing in with google",
-        position: "bottom",
-
-        status: "success",
-        duration: 5000,
-        isClosable: true,
-      });
     } catch (error) {
       toast({
         title: "Error",
