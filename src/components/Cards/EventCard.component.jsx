@@ -59,7 +59,7 @@ function EventCard({
       direction="column"
       border="1px"
       cursor="pointer"
-      mr="4"
+      mr={{ md: "4" }}
       mb="4"
       borderColor="transparent"
       transitionDuration="200ms"
@@ -71,6 +71,9 @@ function EventCard({
       w="full"
       experimental_spaceX="4"
       maxW={{ base: "full", md: "300px" }}
+      onClick={() => {
+        window.location.href = `/manage/event/${id}`;
+      }}
     >
       <AspectRatio ratio={1920 / 1080} w="full">
         <Image src={image} alt={name} rounded="lg" />

@@ -22,7 +22,9 @@ import { User } from "../../Providers/User.provider";
 import { ArrowLeft, Calendar, CheckCircle, MapPin } from "react-feather";
 import { supabase } from "../../Helpers/supabase";
 import moment from "moment";
+import axios from "axios";
 import { useHistory } from "react-router";
+import CurrentLocation from "../../components/Misc/CurrentLocation.component";
 
 function NewEvent(props) {
   const id = props.match.params.id;
@@ -52,9 +54,9 @@ function NewEvent(props) {
   const [community, setCommunity] = useState(undefined);
   const [communitySelected, setCommunitySelected] = useState("None");
   const [communities, setCommunities] = useState(undefined);
+  const [uploading, setUploading] = useState(false);
   const toast = useToast();
   const history = useHistory();
-  console.log(history);
 
   useEffect(() => {
     if (id) {
@@ -62,6 +64,25 @@ function NewEvent(props) {
     }
     getCommunities();
   }, []);
+
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "kolmmszz");
+    try {
+      setUploading(true);
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/relmcloud/image/upload",
+        formData
+      );
+      console.log(res);
+      setImage(res.data.url);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const getCommunities = async () => {
     try {
@@ -118,6 +139,18 @@ function NewEvent(props) {
             createdBy: [localStorage.getItem("email")],
             community: id,
           };
+          const { data } = await supabase
+            .from("communities")
+            .select("id, events")
+            .eq("id", id)
+            .single();
+
+          await supabase
+            .from("communities")
+            .upsert(
+              { id: data.id, events: data.events + 1 },
+              { returning: "minimal" }
+            );
         } else {
           updates = {
             name,
@@ -135,6 +168,20 @@ function NewEvent(props) {
         const { error } = await supabase.from("events").upsert(updates, {
           returning: "minimal",
         });
+        if (communitySelected !== "None") {
+          const { data } = await supabase
+            .from("communities")
+            .select("id, events")
+            .eq("id", communitySelected)
+            .single();
+
+          await supabase
+            .from("communities")
+            .upsert(
+              { id: data.id, events: data.events + 1 },
+              { returning: "minimal" }
+            );
+        }
 
         if (error) {
           throw error;
@@ -157,6 +204,7 @@ function NewEvent(props) {
           }
         }, 1000);
       } catch (error) {
+        console.log(error);
         toast({
           title: "Error",
           position: "bottom",
@@ -229,24 +277,10 @@ function NewEvent(props) {
     <StarterTemplate communityId={id}>
       <Box maxW="1200px">
         {id ? (
-          <Flex alignItems="center" experimental_spaceX="2">
-            <Box
-              cursor="pointer"
-              onClick={() => {
-                history.goBack();
-              }}
-            >
-              <ArrowLeft size="18px" />
-            </Box>
-            <Breadcrumb color="white">
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/home">{user?.username}</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="#">{community?.name}</BreadcrumbLink>
-              </BreadcrumbItem>
-            </Breadcrumb>
-          </Flex>
+          <CurrentLocation
+            username={user?.username}
+            communityName={community?.name}
+          />
         ) : (
           <></>
         )}
@@ -289,17 +323,23 @@ function NewEvent(props) {
               size="sm"
               bg="blackAlpha.600"
               border="1px"
-              cursor="not-allowed"
+              onClick={() => document.getElementById("file").click()}
               borderColor="transparent"
               _hover={{ borderColor: "whiteAlpha.200", bg: "blackAlpha.800" }}
               _focus={{}}
               _active={{ bg: "blackAlpha.700" }}
             >
-              Change cover photo
+              {uploading ? <Spinner /> : <>Change cover photo</>}
             </Button>
           </Box>
         </AspectRatio>
-
+        <Input
+          type="file"
+          accept="image/*"
+          id="file"
+          display="none"
+          onChange={(e) => uploadImage(e.target.files[0])}
+        />
         <Box w={{ base: "full", md: "80%", lg: "70%" }} mt="4">
           <form
             onSubmit={(e) => {
@@ -362,6 +402,7 @@ function NewEvent(props) {
               <Input
                 w="full"
                 type="date"
+                placeholder="Date"
                 onChange={(e) => {
                   const dateString = e.target.value;
                   console.log(dateString);
@@ -386,6 +427,7 @@ function NewEvent(props) {
               <Input
                 w={{ sm: "70%", lg: "40%" }}
                 type="time"
+                placeholder="Time"
                 onChange={(e) => {
                   setDate({
                     time: moment(e.target.value, "HH:mm").format("hh:mm A"),

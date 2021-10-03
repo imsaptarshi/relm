@@ -8,20 +8,110 @@ import {
   Breadcrumb,
   BreadcrumbItem,
   BreadcrumbLink,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  useDisclosure,
+  ModalBody,
 } from "@chakra-ui/react";
-import { ArrowLeft, Settings } from "react-feather";
+import { Link } from "react-router-dom";
+import { ArrowLeft, Settings, Plus } from "react-feather";
 import { useEffect, useState } from "react";
 import { supabase } from "../../Helpers/supabase";
 import { User } from "../../Providers/User.provider";
+import { isUpcoming } from "../../Helpers/isUpcoming";
+import EventCard from "../../components/Cards/EventCard.component";
+import UpdateCommunity from "../Update/UpdateCommunity.page";
+import CurrentLocation from "../../components/Misc/CurrentLocation.component";
 
 function ManageCommunity(props) {
   const id = props.match.params.id;
   const [community, setCommunity] = useState(undefined);
+  const [upcomingEvents, setUpcomingEvents] = useState(undefined);
   const { user } = User();
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
     getCommunity();
+    getEvents();
   }, []);
+
+  const getEvents = async () => {
+    try {
+      const { data, error } = await supabase
+        .from("events")
+        .select("id, name, image, description, date, community, audience")
+        .contains("createdBy", [localStorage.getItem("email")])
+        .eq("community", id)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        throw error;
+      }
+
+      let uE = [];
+      let dE = [];
+      data.forEach((data) => {
+        if (isUpcoming(data.date)) {
+          uE.push(data);
+        } else {
+          dE.push(data);
+        }
+      });
+
+      setUpcomingEvents(uE);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const UpcomingEvents = () => {
+    return (
+      <>
+        <Flex justify="space-between" mt="4" alignItems="center">
+          <Link to={`/manage/community/${id}/events`}>
+            <Text
+              casing="capitalize"
+              fontSize="sm"
+              fontWeight="semibold"
+              letterSpacing="2px"
+              color="white"
+            >
+              UPCOMING EVENTS
+            </Text>
+          </Link>
+          <Link to={`/manage/community/${id}/new/event`}>
+            <Button
+              size="sm"
+              bg="alpha.white"
+              border="1px"
+              borderColor="transparent"
+              leftIcon={<Plus size="18px" />}
+              px="4"
+              _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
+              _focus={{}}
+              _active={{ bg: "whiteAlpha.200" }}
+            >
+              Create
+            </Button>
+          </Link>
+        </Flex>
+        <Flex wrap="wrap" mt="4">
+          {upcomingEvents ? (
+            upcomingEvents?.map((data, key) => (
+              <EventCard key={key} {...data} />
+            ))
+          ) : (
+            <></>
+          )}
+        </Flex>
+      </>
+    );
+  };
 
   const getCommunity = async () => {
     try {
@@ -46,24 +136,30 @@ function ManageCommunity(props) {
   return (
     <StarterTemplate communityId={id}>
       <Box maxW="1200px">
-        <Flex alignItems="center" experimental_spaceX="2">
-          <Box
-            cursor="pointer"
-            onClick={() => {
-              window.location.href = "/home";
-            }}
-          >
-            <ArrowLeft size="18px" />
-          </Box>
-          <Breadcrumb color="white">
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/home">{user?.username}</BreadcrumbLink>
-            </BreadcrumbItem>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="#">{community?.name}</BreadcrumbLink>
-            </BreadcrumbItem>
-          </Breadcrumb>
-        </Flex>
+        <Modal isOpen={isOpen} onClose={onClose} size="xl">
+          <ModalOverlay />
+          <ModalContent bg="#1D2023">
+            <ModalHeader color="white">
+              Settings <ModalCloseButton color="white" />
+            </ModalHeader>
+
+            <ModalBody px="8" pb="8">
+              <UpdateCommunity
+                communityName={community?.name}
+                communityDescription={community?.description}
+                communityLogo={community?.logo}
+                id={community?.id}
+                close={onClose}
+              />
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+
+        <CurrentLocation
+          username={user?.username}
+          communityName={community?.name}
+        />
+
         <Flex justify="space-between" alignItems="end">
           <Box>
             <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">
@@ -77,12 +173,19 @@ function ManageCommunity(props) {
               <></>
             )}
           </Box>
-          <Box p="1">
+          <Box
+            _hover={{ bg: "whiteAlpha.200" }}
+            rounded="full"
+            p="2"
+            cursor="pointer"
+            onClick={() => onOpen()}
+          >
             <Settings size="20px" />
           </Box>
         </Flex>
         <Divider mt="3" color="white" opacity="0.2" />
       </Box>
+      {upcomingEvents ? <UpcomingEvents /> : <></>}
     </StarterTemplate>
   );
 }

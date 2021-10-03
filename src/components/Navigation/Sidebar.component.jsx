@@ -166,8 +166,6 @@ function Sidebar({ communityId }) {
   return (
     <Box>
       <Flex
-        overflowY="auto"
-        overflowX="clip"
         direction="column"
         justify="space-between"
         alignItems={{ base: "center", lg: "start" }}

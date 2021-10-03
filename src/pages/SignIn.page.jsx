@@ -10,9 +10,10 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import Logo from "../Assets/logo.svg";
-import { Check, GitHub } from "react-feather";
+import { Check } from "react-feather";
 import { useState } from "react";
 import { supabase } from "../Helpers/supabase";
+import Google from "../Assets/google.png";
 
 function SignIn() {
   const [loading, setLoading] = useState(false);
@@ -107,7 +108,7 @@ function SignIn() {
         w={{ base: "100%", md: "65%" }}
         h="100vh"
         bg="brand.secondary"
-        p={{ base: "12", md: "20" }}
+        p={{ base: "10", md: "20" }}
       >
         <Box w={{ base: "100%", lg: "400px" }}>
           <Text color="white" fontWeight="bold" fontSize="3xl">
@@ -149,7 +150,7 @@ function SignIn() {
             <Divider w="full" color="white" />
           </Flex>
           <Button
-            leftIcon={<GitHub size="18px" />}
+            leftIcon={<Image src={Google} w="16px" h="16px" />}
             border="1px"
             borderColor="transparent"
             _hover={{ borderColor: "whiteAlpha.200" }}

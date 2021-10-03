@@ -25,7 +25,13 @@ import { ArrowLeft, CheckCircle, Edit, Upload } from "react-feather";
 import { supabase } from "../../Helpers/supabase";
 import axios from "axios";
 
-function NewCommunity() {
+function UpdateCommunity({
+  id,
+  communityName,
+  communityDescription,
+  communityLogo,
+  close,
+}) {
   const Logos = [
     "https://ik.imagekit.io/86h5mrsjotwk/defaultCommunityLogo_gUich_dto.svg?updatedAt=1633160835413",
     "https://ik.imagekit.io/86h5mrsjotwk/dc-3_PXKqFbob4Lj.svg?updatedAt=1633165287477",
@@ -34,9 +40,9 @@ function NewCommunity() {
   ];
 
   const { user } = User();
-  const [logo, setLogo] = useState(Logos[0]);
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+  const [logo, setLogo] = useState(communityLogo);
+  const [name, setName] = useState(communityName);
+  const [description, setDescription] = useState(communityDescription);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const toast = useToast();
@@ -130,6 +136,7 @@ function NewCommunity() {
       try {
         setLoading(true);
         const updates = {
+          id,
           name,
           description,
           logo,
@@ -153,9 +160,8 @@ function NewCommunity() {
           isClosable: true,
         });
 
-        setTimeout(() => {
-          window.location.href = "/home";
-        }, 1000);
+        close();
+        window.location.reload();
       } catch (error) {
         toast({
           title: "Error",
@@ -181,117 +187,95 @@ function NewCommunity() {
   };
 
   return (
-    <StarterTemplate>
+    <Flex
+      mt="6"
+      w="full"
+      direction={{ base: "column", md: "row" }}
+      color="white"
+    >
       <LogoModal />
-      <Box maxW="1200px">
-        <Flex alignItems="center" experimental_spaceX="4">
+      <Box minW="24" mr="6" mb="4">
+        <Text color="white" fontWeight="medium" fontSize="sm" mb="1">
+          Logo
+        </Text>
+        <Box position="relative" w="-webkit-fit-content">
           <Box
-            cursor="pointer"
+            position="absolute"
+            bg="blackAlpha.500"
             p="2"
-            onClick={() => {
-              window.location.href = "/home";
-            }}
-            rounded="full"
-            _hover={{ bg: "whiteAlpha.200" }}
+            cursor="pointer"
+            _hover={{ bg: "blackAlpha.600" }}
+            transitionDuration="200ms"
+            roundedTopStart="xl"
+            bottom="0"
+            right="0"
+            onClick={onOpen}
           >
-            <ArrowLeft />
+            <Edit size="18px" />
           </Box>
-          <Text fontSize={{ base: "xl", md: "2xl" }} fontWeight="bold">
-            Create Community
-          </Text>
-        </Flex>
-        <Divider mt="3" color="white" opacity="0.2" />
-        <Flex
-          mt="6"
-          w={{ base: "full", md: "80%" }}
-          direction={{ base: "column", md: "row" }}
-        >
-          <Box minW="24" mr="6" mb="4">
-            <Text color="white" fontWeight="medium" fontSize="sm" mb="1">
-              Logo
-            </Text>
-            <Box position="relative" w="-webkit-fit-content">
-              <Box
-                position="absolute"
-                bg="blackAlpha.500"
-                p="2"
-                cursor="pointer"
-                _hover={{ bg: "blackAlpha.600" }}
-                transitionDuration="200ms"
-                roundedTopStart="xl"
-                bottom="0"
-                right="0"
-                onClick={onOpen}
-              >
-                <Edit size="18px" />
-              </Box>
-              <Image src={logo} w="24" h="24" rounded="lg" />
-            </Box>
-          </Box>
-          <Box w="full">
-            <Text color="white" fontWeight="medium" fontSize="sm">
-              Name *
-            </Text>
-            <Input
-              w={{ base: "full", md: "80%", lg: "70%" }}
-              type="text"
-              mt="1.5"
-              py="5"
-              rounded="lg"
-              color="white"
-              _hover={{ borderColor: "whiteAlpha.900" }}
-              _focus={{ borderColor: "brand.primary" }}
-              borderColor="whiteAlpha.400"
-              _placeholder={{ color: "whiteAlpha.400" }}
-              placeholder="Community name"
-              onChange={(e) => setName(e.target.value)}
-            />
-            <Text color="white" mt="4" fontWeight="medium" fontSize="sm">
-              Description
-            </Text>
-            <Textarea
-              w={{ base: "full", md: "80%", lg: "70%" }}
-              type="email"
-              mt="1.5"
-              p="4"
-              rounded="lg"
-              color="white"
-              _hover={{ borderColor: "whiteAlpha.900" }}
-              _focus={{ borderColor: "brand.primary" }}
-              borderColor="whiteAlpha.400"
-              _placeholder={{ color: "whiteAlpha.400" }}
-              placeholder="Describe your community"
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <Flex
-              mt="6"
-              justify="end"
-              w={{ base: "full", md: "80%", lg: "70%" }}
-            >
-              <Button
-                display="flex"
-                float="right"
-                rounded="lg"
-                w={loading ? "200px" : "auto"}
-                _focus={{}}
-                _active={{}}
-                color="black"
-                onClick={() => createCommunity(name, description, logo)}
-              >
-                {loading ? (
-                  <Spinner />
-                ) : (
-                  <>
-                    <CheckCircle /> <Text ml="2">Create Community</Text>
-                  </>
-                )}
-              </Button>
-            </Flex>
-          </Box>
+          <Image src={logo} w="24" h="24" rounded="lg" />
+        </Box>
+      </Box>
+      <Box w="full">
+        <Text color="white" fontWeight="medium" fontSize="sm">
+          Name *
+        </Text>
+        <Input
+          value={name}
+          w="full"
+          type="text"
+          mt="1.5"
+          py="5"
+          rounded="lg"
+          color="white"
+          _hover={{ borderColor: "whiteAlpha.900" }}
+          _focus={{ borderColor: "brand.primary" }}
+          borderColor="whiteAlpha.400"
+          _placeholder={{ color: "whiteAlpha.400" }}
+          placeholder="Community name"
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Text color="white" mt="4" fontWeight="medium" fontSize="sm">
+          Description
+        </Text>
+        <Textarea
+          value={description}
+          w="full"
+          type="email"
+          mt="1.5"
+          p="4"
+          rounded="lg"
+          color="white"
+          _hover={{ borderColor: "whiteAlpha.900" }}
+          _focus={{ borderColor: "brand.primary" }}
+          borderColor="whiteAlpha.400"
+          _placeholder={{ color: "whiteAlpha.400" }}
+          placeholder="Describe your community"
+          onChange={(e) => setDescription(e.target.value)}
+        />
+        <Flex mt="6" justify="end" w="full">
+          <Button
+            display="flex"
+            float="right"
+            rounded="lg"
+            w={loading ? "100px" : "auto"}
+            _focus={{}}
+            _active={{}}
+            color="black"
+            onClick={() => createCommunity(name, description, logo)}
+          >
+            {loading ? (
+              <Spinner />
+            ) : (
+              <>
+                <CheckCircle /> <Text ml="2">Save</Text>
+              </>
+            )}
+          </Button>
         </Flex>
       </Box>
-    </StarterTemplate>
+    </Flex>
   );
 }
 
-export default NewCommunity;
+export default UpdateCommunity;

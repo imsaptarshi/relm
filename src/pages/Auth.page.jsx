@@ -125,7 +125,7 @@ function Auth({ session }) {
         w={{ base: "100%", md: "65%" }}
         h="100vh"
         bg="brand.secondary"
-        p={{ base: "12", md: "20" }}
+        p={{ base: "10", md: "20" }}
       >
         <Box w={{ base: "100%", lg: "400px" }}>
           <Text color="white" fontWeight="bold" fontSize="3xl">

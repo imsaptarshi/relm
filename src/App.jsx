@@ -10,6 +10,7 @@ import NewCommunity from "./pages/New/NewCommunity.page";
 import ManageCommunity from "./pages/Manage/ManageCommunity.page";
 import Events from "./pages/Dashboard/Events.page";
 import NewEvent from "./pages/New/NewEvent.page";
+import ManageEvent from "./pages/Manage/ManageEvent.page";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -52,6 +53,7 @@ function App() {
             path="/manage/community/:id"
             component={ManageCommunity}
           />
+          <Route exact path="/manage/event/:id" component={ManageEvent} />
           <Route exact path="/events" component={Events} />
           <Route exact path="/new/event" component={NewEvent} />
           <Route

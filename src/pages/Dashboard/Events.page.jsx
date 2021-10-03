@@ -16,6 +16,7 @@ import { User } from "../../Providers/User.provider";
 import { supabase } from "../../Helpers/supabase";
 import EventCard from "../../components/Cards/EventCard.component";
 import { isUpcoming } from "../../Helpers/isUpcoming";
+import CurrentLocation from "../../components/Misc/CurrentLocation.component";
 
 function Events(props) {
   const id = props.match.params.id;
@@ -23,9 +24,13 @@ function Events(props) {
   const [upcomingEvents, setUpcomingEvents] = useState(undefined);
   const [doneEvents, setDoneEvents] = useState(undefined);
   const NavigationItems = ["Upcoming", "Done"];
+  const [community, setCommunity] = useState(undefined);
   const { user } = User();
 
   useEffect(() => {
+    if (id) {
+      getCommunity();
+    }
     getEvents();
   }, []);
 
@@ -34,9 +39,10 @@ function Events(props) {
       if (id) {
         const { data, error } = await supabase
           .from("events")
-          .select("id, name, image,description,date,community,audience")
+          .select("id, name, image, description, date, community, audience")
           .contains("createdBy", [localStorage.getItem("email")])
-          .eq("community", id);
+          .eq("community", id)
+          .order("created_at", { ascending: false });
 
         if (error) {
           throw error;
@@ -56,8 +62,9 @@ function Events(props) {
       } else {
         const { data, error } = await supabase
           .from("events")
-          .select("id, name, image,description,date,community,audience")
-          .contains("createdBy", [localStorage.getItem("email")]);
+          .select("id, name, image, description, date, community, audience")
+          .contains("createdBy", [localStorage.getItem("email")])
+          .order("created_at", { ascending: false });
 
         if (error) {
           throw error;
@@ -98,32 +105,34 @@ function Events(props) {
     );
   };
 
+  const getCommunity = async () => {
+    try {
+      console.log(localStorage.getItem("email"));
+      const { data, error } = await supabase
+        .from("communities")
+        .select("id, name, logo,description,audience,events")
+        .contains("createdBy", [localStorage.getItem("email")])
+        .eq("id", id)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setCommunity(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <StarterTemplate communityId={id}>
       <Box maxW="1200px">
         {id ? (
-          <Flex alignItems="center" experimental_spaceX="2">
-            <Box
-              cursor="pointer"
-              onClick={() => {
-                if (id) {
-                  window.location.href = "/manage/community/" + id;
-                } else {
-                  window.location.href = "/home";
-                }
-              }}
-            >
-              <ArrowLeft size="18px" />
-            </Box>
-            <Breadcrumb color="white">
-              <BreadcrumbItem>
-                <BreadcrumbLink href="/home">{user?.username}</BreadcrumbLink>
-              </BreadcrumbItem>
-              <BreadcrumbItem>
-                <BreadcrumbLink href="#">Orbits</BreadcrumbLink>
-              </BreadcrumbItem>
-            </Breadcrumb>
-          </Flex>
+          <CurrentLocation
+            username={user?.username}
+            communityName={community?.name}
+          />
         ) : (
           <></>
         )}

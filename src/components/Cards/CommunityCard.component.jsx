@@ -21,13 +21,13 @@ function CommunityCard({ id, name, description, audience, events, logo }) {
       rounded="xl"
       w="full"
       experimental_spaceX="4"
-      maxW="400px"
+      maxW="320px"
     >
       <AspectRatio ratio={1} minW="20">
         <Image src={logo} rounded="lg" />
       </AspectRatio>
       <Flex direction="column" justify="space-between">
-        <Text pr="2" fontWeight="bold" fontSize={{ base: "lg", md: "xl" }}>
+        <Text pr="2" fontWeight="bold" fontSize={{ base: "lg", md: "lg" }}>
           {name}
         </Text>
         <Flex experimental_spaceX="2" alignItems="center">
