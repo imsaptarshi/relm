@@ -1,17 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
-import {
-  Box,
-  Divider,
-  Text,
-  Flex,
-  Button,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-} from "@chakra-ui/react";
+import { Box, Divider, Text, Flex, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { Plus, ArrowLeft } from "react-feather";
+import { Plus } from "react-feather";
 import { User } from "../../Providers/User.provider";
 import { supabase } from "../../Helpers/supabase";
 import EventCard from "../../components/Cards/EventCard.component";

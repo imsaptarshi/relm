@@ -5,9 +5,6 @@ import {
   Box,
   Text,
   Divider,
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
   Button,
   Modal,
   ModalOverlay,
@@ -18,7 +15,7 @@ import {
   ModalBody,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Settings, Plus } from "react-feather";
+import { Settings, Plus } from "react-feather";
 import { useEffect, useState } from "react";
 import { supabase } from "../../Helpers/supabase";
 import { User } from "../../Providers/User.provider";

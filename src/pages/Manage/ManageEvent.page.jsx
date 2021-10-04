@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import {
   Box,
@@ -9,12 +10,6 @@ import {
   InputRightElement,
   useClipboard,
   Tooltip,
-  Table,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
 } from "@chakra-ui/react";
 import { Check, Settings } from "react-feather";
 import { useEffect, useState } from "react";

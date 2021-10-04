@@ -1,7 +1,6 @@
 import {
   Flex,
   Box,
-  Divider,
   Text,
   Image,
   Input,
@@ -19,9 +18,8 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import { User } from "../../Providers/User.provider";
-import { ArrowLeft, CheckCircle, Edit, Upload } from "react-feather";
+import { CheckCircle, Edit, Upload } from "react-feather";
 import { supabase } from "../../Helpers/supabase";
 import axios from "axios";
 
