@@ -7,15 +7,19 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "./theme";
 import { BrowserRouter as Router } from "react-router-dom";
 import { UserProvider } from "./Providers/User.provider";
+import { Provider as SupabaseProvider } from "react-supabase";
+import { supabase } from "./Helpers/supabase";
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <UserProvider>
-        <ChakraProvider theme={theme}>
-          <App />
-        </ChakraProvider>
-      </UserProvider>
+      <SupabaseProvider value={supabase}>
+        <UserProvider>
+          <ChakraProvider theme={theme}>
+            <App />
+          </ChakraProvider>
+        </UserProvider>
+      </SupabaseProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

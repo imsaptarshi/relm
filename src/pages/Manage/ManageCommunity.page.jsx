@@ -132,7 +132,7 @@ function ManageCommunity(props) {
 
   return (
     <StarterTemplate communityId={id}>
-      <Box maxW="1200px">
+      <Box>
         <Modal isOpen={isOpen} onClose={onClose} size="xl">
           <ModalOverlay />
           <ModalContent bg="#1D2023">
@@ -153,6 +153,7 @@ function ManageCommunity(props) {
         </Modal>
 
         <CurrentLocation
+          link="/home"
           username={user?.username}
           communityName={community?.name}
         />

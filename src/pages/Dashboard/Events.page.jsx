@@ -118,7 +118,7 @@ function Events(props) {
 
   return (
     <StarterTemplate communityId={id}>
-      <Box maxW="1200px">
+      <Box>
         {id ? (
           <CurrentLocation
             username={user?.username}
@@ -157,19 +157,22 @@ function Events(props) {
           ))}
         </Flex>
         <Divider color="white" opacity="0.2" />
+
+        <Flex wrap="wrap" mt="6">
+          {active === "Upcoming" ? (
+            upcomingEvents?.map((data, key) => (
+              <EventCard key={key} {...data} />
+            ))
+          ) : (
+            <></>
+          )}
+          {active === "Done" ? (
+            doneEvents?.map((data, key) => <EventCard key={key} {...data} />)
+          ) : (
+            <></>
+          )}
+        </Flex>
       </Box>
-      <Flex wrap="wrap" mt="6">
-        {active === "Upcoming" ? (
-          upcomingEvents?.map((data, key) => <EventCard key={key} {...data} />)
-        ) : (
-          <></>
-        )}
-        {active === "Done" ? (
-          doneEvents?.map((data, key) => <EventCard key={key} {...data} />)
-        ) : (
-          <></>
-        )}
-      </Flex>
     </StarterTemplate>
   );
 }

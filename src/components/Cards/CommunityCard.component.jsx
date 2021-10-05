@@ -9,14 +9,15 @@ function CommunityCard({ id, name, description, audience, events, logo }) {
       }}
       border="1px"
       cursor="pointer"
-      mr={{ md: "0", lg: "4" }}
+      mr={{ md: "4" }}
       mb="4"
       borderColor="transparent"
       transitionDuration="200ms"
       _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
-      overflow="clip"
       alignItems="center"
       bg="alpha.white"
+      overflow="clip"
+      isTruncated
       p="2"
       rounded="xl"
       w="full"

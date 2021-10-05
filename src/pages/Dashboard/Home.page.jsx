@@ -143,7 +143,7 @@ function Home() {
 
   return (
     <StarterTemplate>
-      <Box maxW="1200px">
+      <Box>
         <Text color="whiteAlpha.500" fontSize={{ base: "sm", md: "lg" }}>
           {wish()},
         </Text>
@@ -182,7 +182,7 @@ function Home() {
             <CommunityCard key={key} {...data} />
           ))}
         </Flex>
-        <UpcomingEvents />
+        {upcomingEvents?.length > 0 ? <UpcomingEvents /> : <></>}
       </Box>
     </StarterTemplate>
   );

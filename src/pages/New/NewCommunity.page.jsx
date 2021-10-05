@@ -63,67 +63,6 @@ function NewCommunity() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const LogoModal = () => {
-    return (
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent pb="3" bg="#1D2023" color="white">
-          <ModalHeader>Choose a logo</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex wrap="wrap">
-              <Flex
-                cursor="pointer"
-                border="2px"
-                justify="center"
-                alignItems="center"
-                _hover={{ borderColor: "whiteAlpha.50" }}
-                borderColor="transparent"
-                mb="3"
-                mr="3"
-                w="24"
-                h="24"
-                rounded="xl"
-                bg="whiteAlpha.300"
-                onClick={() => {
-                  document.getElementById("file").click();
-                }}
-              >
-                <Upload size="30px" />
-              </Flex>
-              {Logos.map((data, key) => (
-                <Image
-                  border="4px"
-                  cursor="pointer"
-                  onClick={() => setLogo(data)}
-                  borderColor={logo === data ? "brand.primary" : "transparent"}
-                  mb="3"
-                  mr="3"
-                  src={data}
-                  w="24"
-                  h="24"
-                  rounded="xl"
-                />
-              ))}
-            </Flex>
-          </ModalBody>
-          <Input
-            type="file"
-            id="file"
-            accept="image/*"
-            display="none"
-            onChange={(e) => uploadLogo(e.target.files[0])}
-          />
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              {uploading ? <Spinner /> : <>Done</>}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    );
-  };
-
   const createCommunity = async (name, description, logo) => {
     if (name.length > 3) {
       setLogo(logo);
@@ -136,9 +75,10 @@ function NewCommunity() {
           createdBy: [user?.email],
         };
 
-        const { error } = await supabase.from("communities").upsert(updates, {
-          returning: "minimal",
-        });
+        const { data, error } = await supabase
+          .from("communities")
+          .upsert(updates)
+          .single();
 
         if (error) {
           throw error;
@@ -154,7 +94,7 @@ function NewCommunity() {
         });
 
         setTimeout(() => {
-          window.location.href = "/home";
+          window.location.href = `/manage/community/${data.id}`;
         }, 1000);
       } catch (error) {
         toast({
@@ -182,8 +122,72 @@ function NewCommunity() {
 
   return (
     <StarterTemplate>
-      <LogoModal />
-      <Box maxW="1200px">
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent pb="3" bg="#1D2023" color="white">
+          <ModalHeader>Choose a logo</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Flex wrap="wrap">
+              <Flex
+                cursor="pointer"
+                border="2px"
+                justify="center"
+                alignItems="center"
+                _hover={{ borderColor: "whiteAlpha.50" }}
+                borderColor="transparent"
+                mb="3"
+                mr="3"
+                w="24"
+                h="24"
+                rounded="xl"
+                bg="whiteAlpha.300"
+                onClick={() => {
+                  document.getElementById("file").click();
+                }}
+              >
+                <Upload size="30px" />
+              </Flex>
+              {Logos.map((data, key) => (
+                <Box
+                  key={key}
+                  cursor="pointer"
+                  onClick={() => {
+                    setLogo(data);
+                  }}
+                >
+                  <Image
+                    border="4px"
+                    borderColor={
+                      logo === data ? "brand.primary" : "transparent"
+                    }
+                    mb="3"
+                    mr="3"
+                    src={data}
+                    w="24"
+                    h="24"
+                    rounded="xl"
+                  />
+                </Box>
+              ))}
+            </Flex>
+          </ModalBody>
+          <Input
+            type="file"
+            id="file"
+            accept="image/*"
+            display="none"
+            onChange={(e) => uploadLogo(e.target.files[0])}
+          />
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3} onClick={onClose}>
+              {uploading ? <Spinner /> : <>Done</>}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Box>
         <Flex alignItems="center" experimental_spaceX="4">
           <Box
             cursor="pointer"

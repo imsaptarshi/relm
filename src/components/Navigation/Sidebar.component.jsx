@@ -72,7 +72,9 @@ function Sidebar({ communityId }) {
     {
       name: "Audience",
       isExternal: false,
-      link: "/audience",
+      link: communityId
+        ? `/manage/community/${communityId}/audience`
+        : "/audience",
       Icon: (props) => <Users {...props} />,
     },
     {
@@ -120,7 +122,7 @@ function Sidebar({ communityId }) {
           rounded="full"
         />
         <Text
-          whiteSpace="nowrap"
+          isTruncated
           color="white"
           display={{ base: "none", lg: "block" }}
           fontWeight="bold"
@@ -196,7 +198,12 @@ function Sidebar({ communityId }) {
                     h={{ base: "10", lg: "8" }}
                     rounded="full"
                   />
-                  <Skeleton rounded="xl" h="6" w="20" />
+                  <Skeleton
+                    rounded="xl"
+                    h="6"
+                    w="20"
+                    display={{ base: "none", lg: "block" }}
+                  />
                 </Flex>
               )
             ) : (
@@ -248,8 +255,8 @@ function Sidebar({ communityId }) {
           alignItems="center"
         >
           <Menu>
-            <MenuButton>
-              <Flex alignItems="center" experimental_spaceX="2" overflow="clip">
+            <MenuButton overflow="clip">
+              <Flex alignItems="center" experimental_spaceX="2">
                 <Avatar
                   size="md"
                   src={user?.avatar_url}

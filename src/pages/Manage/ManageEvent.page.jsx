@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable react-hooks/exhaustive-deps */
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import {
@@ -10,6 +11,18 @@ import {
   InputRightElement,
   useClipboard,
   Tooltip,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalHeader,
+  ModalContent,
+  ModalFooter,
+  ModalOverlay,
+  useDisclosure,
+  Button,
+  useToast,
+  Checkbox,
+  Spinner,
 } from "@chakra-ui/react";
 import { Check, Settings } from "react-feather";
 import { useEffect, useState } from "react";
@@ -18,18 +31,27 @@ import { Calendar, Clipboard, Plus, ArrowLeft } from "react-feather";
 import AudienceList from "../../components/Misc/AudienceList.component";
 import HostCard from "../../components/Cards/HostCard.component";
 import { useHistory } from "react-router";
+import UpdateEvent from "../Update/UpdateEvent.page";
 
 function ManageEvent(props) {
   const id = props.match.params.id;
   const [event, setEvent] = useState(undefined);
   const [audience, setAudience] = useState(undefined);
+  const [createdBy, setCreatedBy] = useState([]);
   const { hasCopied, onCopy } = useClipboard(
     `${window.location.origin}/event/${id}`
   );
   const history = useHistory();
+  const toast = useToast();
+  const [isListed, setIsListed] = useState(false);
+  const [registrationOpen, setRegistrationOpen] = useState(false);
+  const [newChanges, setNewChanges] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    getEvents();
+    getEvent();
     getAudience();
   }, []);
 
@@ -60,18 +82,19 @@ function ManageEvent(props) {
       }
 
       setAudience(data);
+
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getEvents = async () => {
+  const getEvent = async () => {
     try {
       const { data, error } = await supabase
         .from("events")
         .select(
-          "id, name, image, description, date, community, audience, createdBy"
+          "id, name, image, link, description, content, date, community, audience, createdBy, admin, isListed, isOpen,platform"
         )
         .contains("createdBy", [localStorage.getItem("email")])
         .eq("id", id)
@@ -82,15 +105,171 @@ function ManageEvent(props) {
       }
 
       setEvent(data);
+      setIsListed(data.isListed);
+      setRegistrationOpen(data.isOpen);
+      setCreatedBy(data.createdBy);
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const updateEvent = async () => {
+    try {
+      setLoading(true);
+      let updates = {};
+      updates = {
+        id,
+        isOpen: registrationOpen,
+        isListed,
+      };
+      console.log(isListed, registrationOpen);
+      console.log(updates);
+
+      const { error } = await supabase.from("events").upsert(updates, {
+        returning: "minimal",
+      });
+
+      if (error) {
+        throw error;
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setNewChanges(false);
+    }
+  };
+
+  function validateEmail(email) {
+    const re =
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  const AddHost = () => {
+    const { isOpen, onOpen, onClose } = useDisclosure();
+    const AddHostModal = () => {
+      return (
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent pb="3" bg="#1D2023" color="white">
+            <ModalHeader>Add host</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Input
+                id="email"
+                type="email"
+                _placeholder={{ color: "whiteAlpha.500" }}
+                placeholder="Email"
+                _focus={{ borderColor: "brand.primary" }}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                bg="brand.primary"
+                _hover={{}}
+                _active={{}}
+                onClick={async () => {
+                  if (validateEmail(document.getElementById("email").value)) {
+                    createdBy.push(document.getElementById("email").value);
+
+                    try {
+                      const { error } = await supabase
+                        .from("events")
+                        .upsert({ id, createdBy }, { returning: "minimal" });
+
+                      if (error) {
+                        throw error;
+                      }
+                    } catch (error) {
+                      console.log(error);
+                    }
+                    onClose();
+                    window.location.reload();
+                  } else {
+                    toast({
+                      title: "Error",
+                      position: "bottom",
+                      description: "Enter a valid email address",
+                      status: "error",
+                      duration: 5000,
+                      isClosable: true,
+                    });
+                  }
+                }}
+              >
+                Add
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      );
+    };
+
+    return (
+      <Flex
+        border="2px"
+        cursor="pointer"
+        mr={{ md: "4" }}
+        mb="4"
+        borderColor="transparent"
+        transitionDuration="200ms"
+        _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
+        overflow="clip"
+        bg="whiteAlpha.50"
+        p="2"
+        justify="center"
+        borderStyle="dashed"
+        alignItems="center"
+        rounded="xl"
+        w="full"
+        onClick={onOpen}
+        minH="14"
+        experimental_spaceX="4"
+        maxW={{ base: "full", md: "280px" }}
+      >
+        <AddHostModal />
+        <Plus />
+      </Flex>
+    );
+  };
+
+  const UpdateEventModal = () => {
+    return (
+      <Modal size="3xl" isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent bg="#1D2023">
+          <ModalHeader color="white">
+            Settings <ModalCloseButton color="white" />
+          </ModalHeader>
+
+          <ModalBody px="8" pb="8">
+            <UpdateEvent
+              eventId={id}
+              eventName={event?.name}
+              eventContent={event?.content}
+              eventDate={event?.date}
+              eventDescription={event?.description}
+              eventPlatform={event?.platform}
+              eventImage={event?.image}
+              eventLink={event?.link}
+            />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
+    );
   };
 
   const CopyInput = () => {
     return (
       <InputGroup>
         <Input
+          cursor="pointer"
+          transitionDuration="200ms"
+          onClick={() => {
+            window.open(`${window.location.origin}/event/${id}`, "_blank");
+          }}
+          _hover={{ color: "brand.primary" }}
           value={`${window.location.origin}/event/${id}`}
           isReadOnly
           rounded="lg"
@@ -116,7 +295,7 @@ function ManageEvent(props) {
 
   return (
     <StarterTemplate>
-      <Box maxW="1200px">
+      <Box>
         <Flex justify="space-between" alignItems="end">
           <Box>
             <Flex experimental_spaceX="3" alignItems="center">
@@ -169,7 +348,9 @@ function ManageEvent(props) {
               rounded="full"
               p="2"
               cursor="pointer"
+              onClick={onOpen}
             >
+              <UpdateEventModal />
               <Settings size="20px" />
             </Box>
             <Box display={{ base: "none", md: "block" }}>
@@ -223,30 +404,50 @@ function ManageEvent(props) {
       </Flex>
       <Flex mt="4" wrap="wrap">
         {event?.createdBy.map((data, key) => (
-          <HostCard email={data} key={key} />
+          <HostCard id={id} admin={event?.admin} email={data} key={key} />
         ))}
-        <Flex
-          border="2px"
-          cursor="pointer"
-          mr={{ md: "4" }}
-          mb="4"
-          borderColor="transparent"
-          transitionDuration="200ms"
-          _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
-          overflow="clip"
-          bg="whiteAlpha.50"
-          p="2"
-          justify="center"
-          borderStyle="dashed"
-          alignItems="center"
-          rounded="xl"
-          w="full"
-          minH="14"
-          experimental_spaceX="4"
-          maxW={{ base: "full", md: "280px" }}
+        {window.localStorage.getItem("email") === event?.admin ? (
+          <AddHost />
+        ) : (
+          <></>
+        )}
+      </Flex>
+      <Flex direction="column" mt="4">
+        <Checkbox
+          w="-webkit-fit-content"
+          onChange={(e) => {
+            setIsListed(e.target.checked);
+            setNewChanges(true);
+          }}
+          isChecked={isListed}
         >
-          <Plus />
-        </Flex>
+          Listed publicly
+        </Checkbox>
+        <Checkbox
+          w="-webkit-fit-content"
+          onChange={(e) => {
+            setRegistrationOpen(e.target.checked);
+            setNewChanges(true);
+          }}
+          isChecked={registrationOpen}
+        >
+          Registrations open
+        </Checkbox>
+        <Box>
+          <Button
+            display={newChanges ? "block" : "none"}
+            float="right"
+            size="sm"
+            mt="2"
+            minW="28"
+            onClick={() => {
+              updateEvent();
+            }}
+            colorScheme="whiteAlpha"
+          >
+            {loading ? <Spinner size="sm" /> : <> Save changes</>}
+          </Button>
+        </Box>
       </Flex>
     </StarterTemplate>
   );

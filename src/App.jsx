@@ -11,6 +11,8 @@ import ManageCommunity from "./pages/Manage/ManageCommunity.page";
 import Events from "./pages/Dashboard/Events.page";
 import NewEvent from "./pages/New/NewEvent.page";
 import ManageEvent from "./pages/Manage/ManageEvent.page";
+import Audience from "./pages/Dashboard/Audience.page";
+import Event from "./pages/Event";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -36,13 +38,13 @@ function App() {
             ? () => <LandingPage />
             : localStorage.getItem("email")
             ? () => {
-                window.location.href = "/home";
                 return <Home />;
               }
             : () => <Auth session={session} />
         }
       />
       <Route exact path="/signin" component={SignIn} />
+      <Route exact path="/event/:id" component={Event} />
       <Route exact path="/auth" render={() => <Auth session={session} />} />
       {localStorage.getItem("email") ? (
         <>
@@ -62,12 +64,15 @@ function App() {
             component={NewEvent}
           />
           <Route exact path="/manage/community/:id/events" component={Events} />
+          <Route exact path="/audience" component={Audience} />
+          <Route
+            exact
+            path="/manage/community/:id/audience"
+            component={Audience}
+          />
         </>
       ) : (
-        () => {
-          window.location.href = "/signin";
-          return <></>;
-        }
+        <SignIn />
       )}
     </Switch>
   );

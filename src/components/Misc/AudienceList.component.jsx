@@ -1,6 +1,6 @@
 import { Table, Box, Thead, Tr, Th, Tbody, Td, Text } from "@chakra-ui/react";
 
-function AudienceList({ audience }) {
+function AudienceList({ audience, communityId }) {
   return (
     <Box border="1px" rounded="xl" mt="4" borderColor="whiteAlpha.400">
       <Table variant="simple" colorScheme="whiteAlpha">
@@ -19,7 +19,7 @@ function AudienceList({ audience }) {
         <Tbody>
           {audience?.length > 0 ? (
             audience?.map((data, key) => (
-              <Tr>
+              <Tr key={key}>
                 <Td maxW={{ base: "100px", md: "200px" }}>{data.name}</Td>
                 <Td display={{ base: "none", md: "table-cell" }} maxW="200px">
                   {data.email}

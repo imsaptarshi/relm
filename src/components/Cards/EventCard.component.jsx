@@ -40,7 +40,6 @@ function EventCard({
       const { data, error } = await supabase
         .from("communities")
         .select("id, name, logo")
-        .contains("createdBy", [localStorage.getItem("email")])
         .eq("id", community)
         .single();
 

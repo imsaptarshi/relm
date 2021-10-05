@@ -157,10 +157,12 @@ function Auth({ session }) {
             rounded="lg"
             _focus={{}}
             _active={{}}
-            rightIcon={<ArrowRight size="20px" />}
+            rightIcon={
+              loading ? <Spinner size="sm" /> : <ArrowRight size="20px" />
+            }
             onClick={() => updateUser(username)}
           >
-            {loading ? <Spinner /> : <>Continue</>}
+            Continue
           </Button>
         </Box>
       </Box>

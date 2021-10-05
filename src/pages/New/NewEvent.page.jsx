@@ -124,6 +124,7 @@ function NewEvent(props) {
       try {
         setLoading(true);
         let updates = {};
+
         if (id) {
           updates = {
             name,
@@ -132,6 +133,7 @@ function NewEvent(props) {
             date,
             link,
             image,
+            admin: localStorage.getItem("email"),
             platform: active.enum,
             createdBy: [localStorage.getItem("email")],
             community: id,
@@ -147,7 +149,8 @@ function NewEvent(props) {
             .upsert(
               { id: data.id, events: data.events + 1 },
               { returning: "minimal" }
-            );
+            )
+            .single();
         } else {
           updates = {
             name,
@@ -156,15 +159,17 @@ function NewEvent(props) {
             date,
             link,
             image,
+            admin: localStorage.getItem("email"),
             platform: active.enum,
             createdBy: [localStorage.getItem("email")],
             community: communitySelected === "None" ? null : communitySelected,
           };
         }
 
-        const { error } = await supabase.from("events").upsert(updates, {
-          returning: "minimal",
-        });
+        const EventData = await supabase
+          .from("events")
+          .upsert(updates)
+          .single();
         if (communitySelected !== "None") {
           const { data } = await supabase
             .from("communities")
@@ -180,25 +185,21 @@ function NewEvent(props) {
             );
         }
 
-        if (error) {
-          throw error;
+        if (EventData.error) {
+          throw EventData.error;
         }
 
         toast({
           title: "Success",
           position: "bottom",
-          description: "Community created successfully!",
+          description: "Event created successfully!",
           status: "success",
           duration: 5000,
           isClosable: true,
         });
 
         setTimeout(() => {
-          if (id) {
-            window.location.href = "/manage/community/" + id + "/events";
-          } else {
-            window.location.href = "/events";
-          }
+          window.location.href = `/manage/event/${EventData.data.id}`;
         }, 1000);
       } catch (error) {
         console.log(error);
@@ -272,7 +273,7 @@ function NewEvent(props) {
 
   return (
     <StarterTemplate communityId={id}>
-      <Box maxW="1200px">
+      <Box>
         {id ? (
           <CurrentLocation
             username={user?.username}
@@ -405,10 +406,10 @@ function NewEvent(props) {
                   console.log(dateString);
                   const dateFormatted = dateString.split("-");
                   setDate({
+                    ...date,
                     date: dateFormatted[2],
                     month: dateFormatted[1],
                     year: dateFormatted[0],
-                    ...date,
                   });
                 }}
                 mt="1.5"
@@ -427,8 +428,8 @@ function NewEvent(props) {
                 placeholder="Time"
                 onChange={(e) => {
                   setDate({
-                    time: moment(e.target.value, "HH:mm").format("hh:mm A"),
                     ...date,
+                    time: moment(e.target.value, "HH:mm").format("hh:mm A"),
                   });
                 }}
                 mt="1.5"

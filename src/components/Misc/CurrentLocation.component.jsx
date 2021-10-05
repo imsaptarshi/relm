@@ -8,7 +8,7 @@ import {
 import { ArrowLeft } from "react-feather";
 import { useHistory } from "react-router";
 
-function CurrentLocation({ username, communityName }) {
+function CurrentLocation({ username, communityName, link }) {
   const history = useHistory();
 
   return (
@@ -16,7 +16,11 @@ function CurrentLocation({ username, communityName }) {
       <Box
         cursor="pointer"
         onClick={() => {
-          history.goBack();
+          if (link) {
+            window.location.href = link;
+          } else {
+            history.goBack();
+          }
         }}
       >
         <ArrowLeft size="18px" />

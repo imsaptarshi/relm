@@ -96,18 +96,26 @@ function UpdateCommunity({
                 <Upload size="30px" />
               </Flex>
               {Logos.map((data, key) => (
-                <Image
-                  border="4px"
+                <Box
+                  key={key}
                   cursor="pointer"
-                  onClick={() => setLogo(data)}
-                  borderColor={logo === data ? "brand.primary" : "transparent"}
-                  mb="3"
-                  mr="3"
-                  src={data}
-                  w="24"
-                  h="24"
-                  rounded="xl"
-                />
+                  onClick={() => {
+                    setLogo(data);
+                  }}
+                >
+                  <Image
+                    border="4px"
+                    borderColor={
+                      logo === data ? "brand.primary" : "transparent"
+                    }
+                    mb="3"
+                    mr="3"
+                    src={data}
+                    w="24"
+                    h="24"
+                    rounded="xl"
+                  />
+                </Box>
               ))}
             </Flex>
           </ModalBody>
