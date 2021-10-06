@@ -8,6 +8,7 @@ import { supabase } from "../../Helpers/supabase";
 import EventCard from "../../components/Cards/EventCard.component";
 import { isUpcoming } from "../../Helpers/isUpcoming";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
+import { Helmet } from "react-helmet";
 
 function Events(props) {
   const id = props.match.params.id;
@@ -118,6 +119,9 @@ function Events(props) {
 
   return (
     <StarterTemplate communityId={id}>
+      <Helmet>
+        <title>Events | Relm</title>
+      </Helmet>
       <Box>
         {id ? (
           <CurrentLocation

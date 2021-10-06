@@ -22,6 +22,7 @@ import moment from "moment";
 import axios from "axios";
 import { useHistory } from "react-router";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
+import { Helmet } from "react-helmet";
 
 function NewEvent(props) {
   const id = props.match.params.id;
@@ -273,6 +274,9 @@ function NewEvent(props) {
 
   return (
     <StarterTemplate communityId={id}>
+      <Helmet>
+        <title>New Event | Relm</title>
+      </Helmet>
       <Box>
         {id ? (
           <CurrentLocation

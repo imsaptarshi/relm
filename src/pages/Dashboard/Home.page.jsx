@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import EventCard from "../../components/Cards/EventCard.component";
 import { isUpcoming } from "../../Helpers/isUpcoming";
 import { wish } from "../../Helpers/wisher";
+import { Helmet } from "react-helmet";
 
 function Home() {
   const { user, setUser } = User();
@@ -143,6 +144,9 @@ function Home() {
 
   return (
     <StarterTemplate>
+      <Helmet>
+        <title>Home | Relm</title>
+      </Helmet>
       <Box>
         <Text color="whiteAlpha.500" fontSize={{ base: "sm", md: "lg" }}>
           {wish()},

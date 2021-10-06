@@ -33,6 +33,7 @@ import HostCard from "../../components/Cards/HostCard.component";
 import { useHistory } from "react-router";
 import UpdateEvent from "../Update/UpdateEvent.page";
 import { formatDate } from "../../Helpers/dateFormatter";
+import { Helmet } from "react-helmet";
 
 function ManageEvent(props) {
   const id = props.match.params.id;
@@ -281,6 +282,13 @@ function ManageEvent(props) {
 
   return (
     <StarterTemplate>
+      {event ? (
+        <Helmet>
+          <title>{event?.name} | Relm</title>
+        </Helmet>
+      ) : (
+        <></>
+      )}
       <Box>
         <Flex justify="space-between" alignItems="end">
           <Box>

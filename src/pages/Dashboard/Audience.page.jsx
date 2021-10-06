@@ -6,6 +6,7 @@ import { User } from "../../Providers/User.provider";
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import AudienceList from "../../components/Misc/AudienceList.component";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
+import { Helmet } from "react-helmet";
 
 function Audience(props) {
   const id = props.match.params.id;
@@ -73,6 +74,9 @@ function Audience(props) {
 
   return (
     <StarterTemplate communityId={id}>
+      <Helmet>
+        <title>Audience | Relm</title>
+      </Helmet>
       <Box>
         {id ? (
           <CurrentLocation

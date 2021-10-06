@@ -24,6 +24,7 @@ import { User } from "../../Providers/User.provider";
 import { ArrowLeft, CheckCircle, Edit, Upload } from "react-feather";
 import { supabase } from "../../Helpers/supabase";
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 function NewCommunity() {
   const Logos = [
@@ -122,6 +123,9 @@ function NewCommunity() {
 
   return (
     <StarterTemplate>
+      <Helmet>
+        <title>New Community | Relm</title>
+      </Helmet>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent pb="3" bg="#1D2023" color="white">

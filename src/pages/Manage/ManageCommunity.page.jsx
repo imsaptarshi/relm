@@ -23,6 +23,7 @@ import { isUpcoming } from "../../Helpers/isUpcoming";
 import EventCard from "../../components/Cards/EventCard.component";
 import UpdateCommunity from "../Update/UpdateCommunity.page";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
+import { Helmet } from "react-helmet";
 
 function ManageCommunity(props) {
   const id = props.match.params.id;
@@ -142,6 +143,13 @@ function ManageCommunity(props) {
 
   return (
     <StarterTemplate communityId={id}>
+      {community ? (
+        <Helmet>
+          <title>{community?.name} | Relm</title>
+        </Helmet>
+      ) : (
+        <></>
+      )}
       <Box>
         <Modal isOpen={isOpen} onClose={onClose} size="xl">
           <ModalOverlay />
