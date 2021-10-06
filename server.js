@@ -70,7 +70,7 @@ addDefaultRoute("/events");
 addDefaultRoute("/new/event");
 addDefaultRoute("/manage/community/:id/new/event");
 addDefaultRoute("/manage/community/:id/events");
-addDefaultRoute("audience");
+addDefaultRoute("/audience");
 addDefaultRoute("/manage/community/:id/audience");
 
 app.use(express.static(path.resolve(__dirname, "./build")));
