@@ -27,7 +27,6 @@ import {
 import Showdown from "showdown";
 import "./event.css";
 import EventHostCard from "./EventHostCard.component";
-import { Helmet } from "react-helmet";
 
 function Event(props) {
   const id = props.match.params.id;
