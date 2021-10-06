@@ -13,6 +13,25 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 
+const addDefaultRoute = (route) => {
+  return app.get(route, (req, res) => {
+    const filePath = path.resolve(__dirname, "./build", "index.html");
+    fs.readFile(filePath, "utf-8", (err, data) => {
+      if (err) {
+        return console.log(err);
+      }
+      data = data
+        .replace(/__TITLE__/g, "Relm")
+        .replace(
+          /__DESCRIPTION__/g,
+          "Making communities more engaging with events, community analytics and newsletters with Relm"
+        );
+
+      res.send(data);
+    });
+  });
+};
+
 app.get("/event/:id", async (req, res) => {
   const filePath = path.resolve(__dirname, "./build", "index.html");
   fs.readFile(filePath, "utf-8", async (err, data) => {
@@ -40,22 +59,19 @@ app.get("/event/:id", async (req, res) => {
   });
 });
 
-app.get("/", (req, res) => {
-  const filePath = path.resolve(__dirname, "./build", "index.html");
-  fs.readFile(filePath, "utf-8", (err, data) => {
-    if (err) {
-      return console.log(err);
-    }
-    data = data
-      .replace(/__TITLE__/g, "Relm")
-      .replace(
-        /__DESCRIPTION__/g,
-        "Making communities more engaging with events, community analytics and newsletters with Relm"
-      );
-
-    res.send(data);
-  });
-});
+addDefaultRoute("/");
+addDefaultRoute("/home");
+addDefaultRoute("/signin");
+addDefaultRoute("/auth");
+addDefaultRoute("/new/community");
+addDefaultRoute("/manage/community/:id");
+addDefaultRoute("/manage/event/:id");
+addDefaultRoute("/events");
+addDefaultRoute("/new/event");
+addDefaultRoute("/manage/community/:id/new/event");
+addDefaultRoute("/manage/community/:id/events");
+addDefaultRoute("audience");
+addDefaultRoute("/manage/community/:id/audience");
 
 app.use(express.static(path.resolve(__dirname, "./build")));
 app.listen(PORT, () => {
