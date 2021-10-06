@@ -38,6 +38,7 @@ function App() {
             ? () => <LandingPage />
             : localStorage.getItem("email")
             ? () => {
+                window.location.href = "/home";
                 return <Home />;
               }
             : () => <Auth session={session} />

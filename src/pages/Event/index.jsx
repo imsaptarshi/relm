@@ -27,6 +27,7 @@ import {
 import Showdown from "showdown";
 import "./event.css";
 import EventHostCard from "./EventHostCard.component";
+import Footer from "../../components/Footer/Footer.component";
 
 function Event(props) {
   const id = props.match.params.id;
@@ -194,7 +195,12 @@ function Event(props) {
       {event ? (
         <>
           {event?.isListed ? (
-            <Flex bg="brand.secondary" justify="center" w="full">
+            <Flex
+              bg="brand.secondary"
+              alignItems="center"
+              w="full"
+              direction="column"
+            >
               <Box
                 minH="100vh"
                 py="6"
@@ -435,6 +441,10 @@ function Event(props) {
                     </Flex>
                   </Box>
                 </Box>
+              </Box>
+              <Box w="full" mt="10">
+                <Divider opacity="0.1" />
+                <Footer />
               </Box>
             </Flex>
           ) : (

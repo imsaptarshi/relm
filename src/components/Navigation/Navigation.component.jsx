@@ -87,6 +87,11 @@ function Navigation({ communityId }) {
     <Flex w="full" justify="space-between" alignItems="center">
       <Flex
         experimental_spaceX={community ? "2" : "3"}
+        onClick={() => {
+          if (!community) {
+            window.location.href = "/";
+          }
+        }}
         alignItems="center"
         color="white"
         _hover={{ color: "brand.primary" }}
