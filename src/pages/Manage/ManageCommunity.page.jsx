@@ -97,15 +97,25 @@ function ManageCommunity(props) {
             </Button>
           </Link>
         </Flex>
-        <Flex wrap="wrap" mt="4">
-          {upcomingEvents ? (
-            upcomingEvents?.map((data, key) => (
+
+        {upcomingEvents?.length > 0 ? (
+          upcomingEvents?.map((data, key) => (
+            <Flex wrap="wrap" mt="4">
               <EventCard key={key} {...data} />
-            ))
-          ) : (
-            <></>
-          )}
-        </Flex>
+            </Flex>
+          ))
+        ) : upcomingEvents ? (
+          <Flex
+            color="whiteAlpha.600"
+            my="10"
+            justify="center"
+            textAlign="center"
+          >
+            🐝 No upcoming events
+          </Flex>
+        ) : (
+          <></>
+        )}
       </>
     );
   };

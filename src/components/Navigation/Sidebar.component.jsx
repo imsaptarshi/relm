@@ -113,7 +113,16 @@ function Sidebar({ communityId }) {
 
   const CommunityDisplay = ({ name, logo }) => {
     return (
-      <Flex mb="6" display="flex" alignItems="center" experimental_spaceX="2">
+      <Flex
+        cursor="pointer"
+        onClick={() => {
+          window.location.href = `/manage/community/${communityId}`;
+        }}
+        mb="6"
+        display="flex"
+        alignItems="center"
+        experimental_spaceX="2"
+      >
         <Image
           src={logo}
           alt={name}
@@ -178,7 +187,13 @@ function Sidebar({ communityId }) {
         p={{ base: "6", lg: "10" }}
       >
         <Box w={{ lg: "full" }}>
-          <Image src={Logo} alt="relm" w="10" h="10" />
+          <Box
+            w="-webkit-fit-content"
+            cursor="pointer"
+            onClick={() => (window.location.href = "/home")}
+          >
+            <Image src={Logo} alt="relm" w="10" h="10" />
+          </Box>
           <Box px={{ base: "0", lg: "10" }} mt="50px">
             {communityId ? (
               community ? (

@@ -177,11 +177,24 @@ function Home() {
             </Button>
           </Link>
         </Flex>
-        <Flex mt="4" wrap="wrap">
-          {communitities?.map((data, key) => (
-            <CommunityCard key={key} {...data} />
-          ))}
-        </Flex>
+        {communitities?.length > 0 ? (
+          <Flex mt="4" wrap="wrap">
+            {communitities?.map((data, key) => (
+              <CommunityCard key={key} {...data} />
+            ))}
+          </Flex>
+        ) : communitities ? (
+          <Flex
+            color="whiteAlpha.600"
+            my="8"
+            textAlign="center"
+            justify="center"
+          >
+            🐝 Click on create to add communities
+          </Flex>
+        ) : (
+          <></>
+        )}
         {upcomingEvents?.length > 0 ? <UpcomingEvents /> : <></>}
       </Box>
     </StarterTemplate>

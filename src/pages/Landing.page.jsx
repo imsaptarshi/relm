@@ -30,8 +30,8 @@ function LandingPage() {
             px={{ lg: "40", md: "40", xl: "80" }}
             align="center"
           >
-            Foster meaningful relationships with events, newsletters, and
-            community analytics with{" "}
+            Making communities more engaging with events, community analytics
+            and newsletters with{" "}
             <Text cursor="pointer" display="inline" color="brand.primary">
               Relm
             </Text>

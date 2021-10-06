@@ -32,6 +32,7 @@ import AudienceList from "../../components/Misc/AudienceList.component";
 import HostCard from "../../components/Cards/HostCard.component";
 import { useHistory } from "react-router";
 import UpdateEvent from "../Update/UpdateEvent.page";
+import { formatDate } from "../../Helpers/dateFormatter";
 
 function ManageEvent(props) {
   const id = props.match.params.id;
@@ -54,21 +55,6 @@ function ManageEvent(props) {
     getEvent();
     getAudience();
   }, []);
-
-  const Months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
 
   const getAudience = async () => {
     try {
@@ -324,11 +310,7 @@ function ManageEvent(props) {
               mt="1"
             >
               <Calendar size="14px" />
-              <Text>
-                {`${Months[event?.date.month - 1]} ${event?.date.date}, ${
-                  event?.date.time
-                } GMT+5:30`}
-              </Text>
+              <Text>{formatDate(event?.date)}</Text>
             </Flex>
             {event?.description ? (
               <Text
