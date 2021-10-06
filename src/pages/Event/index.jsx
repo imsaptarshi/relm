@@ -27,7 +27,7 @@ import {
 import Showdown from "showdown";
 import "./event.css";
 import EventHostCard from "./EventHostCard.component";
-import MetaTags from "react-meta-tags";
+import { Helmet } from "react-helmet";
 
 function Event(props) {
   const id = props.match.params.id;
@@ -158,29 +158,6 @@ function Event(props) {
     }
   };
 
-  const Header = () => {
-    return (
-      <MetaTags>
-        <title>{event?.name} - Relm</title>
-        <meta name="title" content={`${event?.name} - Relm`} />
-        <meta name="description" content={event?.description} />
-
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={window.location.href} />
-        <meta property="og:title" content={`${event?.name} - Relm`} />
-        <meta property="og:image:alt" content={event?.description} />
-        <meta property="og:description" content={event?.description} />
-        <meta property="og:image" content={event?.image} />
-
-        <meta property="twitter:card" content="summary_large_image" />
-        <meta property="twitter:url" content={window.location.href} />
-        <meta property="twitter:title" content={`${event?.name} - Relm`} />
-        <meta property="twitter:description" content={event?.description} />
-        <meta property="twitter:image" content={event?.image} />
-      </MetaTags>
-    );
-  };
-
   const ProfileDisplay = () => {
     return (
       <Flex
@@ -219,7 +196,30 @@ function Event(props) {
         <>
           {event?.isListed ? (
             <Flex bg="brand.secondary" justify="center" w="full">
-              <Header />
+              <Helmet>
+                <title>{event?.name} - Relm</title>
+                <meta name="title" content={`${event?.name} - Relm`} />
+                <meta name="description" content={event?.description} />
+
+                <meta property="og:type" content="website" />
+                <meta property="og:url" content={window.location.href} />
+                <meta property="og:title" content={`${event?.name} - Relm`} />
+                <meta property="og:image:alt" content={event?.description} />
+                <meta property="og:description" content={event?.description} />
+                <meta property="og:image" content={event?.image} />
+
+                <meta property="twitter:card" content="summary_large_image" />
+                <meta property="twitter:url" content={window.location.href} />
+                <meta
+                  property="twitter:title"
+                  content={`${event?.name} - Relm`}
+                />
+                <meta
+                  property="twitter:description"
+                  content={event?.description}
+                />
+                <meta property="twitter:image" content={event?.image} />
+              </Helmet>
               <Box
                 minH="100vh"
                 py="6"
