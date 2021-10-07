@@ -26,10 +26,7 @@ const addDefaultRoute = (route) => {
           /__DESCRIPTION__/g,
           "Making communities more engaging with events, community analytics and newsletters with Relm"
         )
-        .replace(
-          /__IMAGE__/g,
-          "https://ik.imagekit.io/86h5mrsjotwk/cover_YoyL6ufRI-k.png?updatedAt=1633614358979"
-        );
+        .replace(/__IMAGE__/g, "https://i.ibb.co/47TKPtY/cover.png");
 
       res.send(data);
     });

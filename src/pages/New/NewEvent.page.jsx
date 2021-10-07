@@ -42,7 +42,7 @@ function NewEvent(props) {
   const [active, setActive] = useState(Platforms[0]);
   const [link, setLink] = useState("");
   const [image, setImage] = useState(
-    "https://ik.imagekit.io/86h5mrsjotwk/defaultEvent_GGD_P8xy-jP.png?updatedAt=1633174215871"
+    "https://i.ibb.co/L61C1RD/default-Event.png"
   );
   const [name, setName] = useState("");
   const [date, setDate] = useState({});
