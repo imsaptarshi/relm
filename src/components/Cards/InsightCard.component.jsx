@@ -32,6 +32,8 @@ function InsightCard({ name, email, content, rating, event }) {
 
   return (
     <Flex
+      gridRow="1/-1"
+      gridColumn="1"
       direction="column"
       border="1px"
       cursor="pointer"
@@ -47,7 +49,6 @@ function InsightCard({ name, email, content, rating, event }) {
       px="6"
       rounded="xl"
       w="full"
-      maxW={{ base: "full", md: "320px" }}
     >
       <Text
         align="left"

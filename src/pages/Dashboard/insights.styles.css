@@ -1,0 +1,21 @@
+#insight-box {
+  column-count: 3;
+}
+
+@media (max-width: 767px) {
+  #insight-box {
+    column-count: 1;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  #insight-box {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1700px) {
+  #insight-box {
+    column-count: 4;
+  }
+}

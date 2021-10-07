@@ -7,6 +7,7 @@ import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
 import { Helmet } from "react-helmet";
 import InsightCard from "../../components/Cards/InsightCard.component";
+import "./insights.styles.css";
 
 function Insights(props) {
   const id = props.match.params.id;
@@ -94,11 +95,17 @@ function Insights(props) {
       </Box>
       {insights ? (
         insights?.length > 0 ? (
-          <Flex mt="6" wrap="wrap">
+          <Box id="insight-box" mt="6">
             {insights.map((data, key) => (
-              <InsightCard key={key} {...data} />
+              <Box
+                display="grid"
+                style={{ breakInside: "avoid" }}
+                gridTemplateRows="1fr auto"
+              >
+                <InsightCard key={key} {...data} />
+              </Box>
             ))}
-          </Flex>
+          </Box>
         ) : (
           <Flex
             color="whiteAlpha.600"
