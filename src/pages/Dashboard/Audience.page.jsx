@@ -1,17 +1,27 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
-import { Box, Text, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Divider,
+  Input,
+  InputGroup,
+  InputLeftElement,
+} from "@chakra-ui/react";
 import { supabase } from "../../Helpers/supabase";
 import { User } from "../../Providers/User.provider";
 import StarterTemplate from "../../components/Misc/StarterTemplace.component";
 import AudienceList from "../../components/Misc/AudienceList.component";
 import CurrentLocation from "../../components/Misc/CurrentLocation.component";
 import { Helmet } from "react-helmet";
+import { Search } from "react-feather";
 
 function Audience(props) {
   const id = props.match.params.id;
   const { user } = User();
   const [audience, setAudience] = useState(undefined);
+  const [searchedAudience, setSearchedAudience] = useState(undefined);
+  const [query, setQuery] = useState("");
   const [community, setCommunity] = useState(undefined);
 
   useEffect(() => {
@@ -90,7 +100,42 @@ function Audience(props) {
           Audience
         </Text>
         <Divider mt="3" color="white" opacity="0.2" />
-        <AudienceList audience={audience} communityId={id} />
+        <Box mt="6">
+          <InputGroup>
+            <InputLeftElement color="brand.primary">
+              <Search size="18px" />
+            </InputLeftElement>
+            <Input
+              onChange={(e) => {
+                const query = e.target.value;
+                setQuery(query);
+                const queriedData = [];
+                audience?.forEach((data) => {
+                  if (
+                    data.name.startsWith(query) ||
+                    data.email.startsWith(query)
+                  ) {
+                    queriedData.push(data);
+                  }
+                });
+                setSearchedAudience(queriedData);
+              }}
+              py="5"
+              rounded="xl"
+              color="white"
+              _hover={{ borderColor: "whiteAlpha.900" }}
+              _focus={{ borderColor: "brand.primary" }}
+              borderColor="whiteAlpha.400"
+              _placeholder={{ color: "whiteAlpha.400" }}
+              placeholder="Search"
+            />
+          </InputGroup>
+          <AudienceList
+            placeholder="No audience"
+            audience={query.length > 0 ? searchedAudience : audience}
+            communityId={id}
+          />
+        </Box>
       </Box>
     </StarterTemplate>
   );

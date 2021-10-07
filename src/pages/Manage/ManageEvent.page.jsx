@@ -163,7 +163,10 @@ function ManageEvent(props) {
                     try {
                       const { error } = await supabase
                         .from("events")
-                        .upsert({ id, createdBy }, { returning: "minimal" });
+                        .upsert(
+                          { id, createdBy: [...new Set(createdBy)] },
+                          { returning: "minimal" }
+                        );
 
                       if (error) {
                         throw error;
@@ -280,6 +283,56 @@ function ManageEvent(props) {
     );
   };
 
+  const FeedbackFormLink = () => {
+    const { hasCopied, onCopy } = useClipboard(
+      `${window.location.origin}/feedback/${id}`
+    );
+
+    return (
+      <Box mb="6">
+        <Flex justify="space-between" mt="4" alignItems="center">
+          <Text
+            casing="capitalize"
+            fontSize="sm"
+            fontWeight="semibold"
+            letterSpacing="2px"
+            color="white"
+          >
+            FEEDBACK FORM LINK
+          </Text>
+        </Flex>
+        <InputGroup mt="2" maxW={{ md: "300px" }}>
+          <Input
+            cursor="pointer"
+            transitionDuration="200ms"
+            onClick={() => {
+              window.open(`${window.location.origin}/feedback/${id}`, "_blank");
+            }}
+            _hover={{ color: "brand.primary" }}
+            value={`${window.location.origin}/feedback/${id}`}
+            isReadOnly
+            rounded="lg"
+            border="none"
+            bg="whiteAlpha.200"
+          />
+
+          <InputRightElement
+            onClick={() => onCopy()}
+            cursor="pointer"
+            p="2"
+            roundedRight="lg"
+            transitionDuration="200ms"
+            _hover={{ color: "brand.primary" }}
+          >
+            <Tooltip label="Copy to clipboard">
+              {hasCopied ? <Check /> : <Clipboard size="20px" />}
+            </Tooltip>
+          </InputRightElement>
+        </InputGroup>
+      </Box>
+    );
+  };
+
   return (
     <StarterTemplate>
       {event ? (
@@ -289,156 +342,163 @@ function ManageEvent(props) {
       ) : (
         <></>
       )}
-      <Box>
-        <Flex justify="space-between" alignItems="end">
+      {event ? (
+        <>
           <Box>
-            <Flex experimental_spaceX="3" alignItems="center">
-              <Box
-                cursor="pointer"
-                p="2"
-                w="10"
-                h="10"
-                onClick={() => {
-                  history.goBack();
-                }}
-                rounded="full"
-                _hover={{ bg: "whiteAlpha.200" }}
-              >
-                <ArrowLeft />
+            <Flex justify="space-between" alignItems="end">
+              <Box>
+                <Flex experimental_spaceX="3" alignItems="center">
+                  <Box
+                    cursor="pointer"
+                    p="2"
+                    w="10"
+                    h="10"
+                    onClick={() => {
+                      history.goBack();
+                    }}
+                    rounded="full"
+                    _hover={{ bg: "whiteAlpha.200" }}
+                  >
+                    <ArrowLeft />
+                  </Box>
+                  <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">
+                    {event?.name}
+                  </Text>
+                </Flex>
+                <Flex
+                  fontSize="xs"
+                  color="brand.primary"
+                  experimental_spaceX="1.5"
+                  alignItems="center"
+                  mt="1"
+                >
+                  <Calendar size="14px" />
+                  <Text>{formatDate(event?.date)}</Text>
+                </Flex>
+                {event?.description ? (
+                  <Text
+                    mt="1"
+                    fontSize={{ base: "xs", md: "sm" }}
+                    fontWeight="thin"
+                  >
+                    {event?.description}
+                  </Text>
+                ) : (
+                  <></>
+                )}
               </Box>
-              <Text fontSize={{ base: "2xl", md: "3xl" }} fontWeight="bold">
-                {event?.name}
-              </Text>
+              <Flex direction="column" alignItems="end" experimental_spaceY="1">
+                <Box
+                  _hover={{ bg: "whiteAlpha.200" }}
+                  rounded="full"
+                  p="2"
+                  cursor="pointer"
+                  onClick={onOpen}
+                >
+                  <UpdateEventModal />
+                  <Settings size="20px" />
+                </Box>
+                <Box display={{ base: "none", md: "block" }}>
+                  <Text fontSize="xs" mb="1" color="whiteAlpha.500">
+                    Sharable invite link
+                  </Text>
+                  <CopyInput />
+                </Box>
+              </Flex>
             </Flex>
-            <Flex
-              fontSize="xs"
-              color="brand.primary"
-              experimental_spaceX="1.5"
-              alignItems="center"
-              mt="1"
-            >
-              <Calendar size="14px" />
-              <Text>{formatDate(event?.date)}</Text>
-            </Flex>
-            {event?.description ? (
+          </Box>
+          <Divider mt="3" color="white" opacity="0.2" />
+          <Box display={{ base: "block", md: "none" }}>
+            <Flex justify="space-between" mt="4" alignItems="center">
               <Text
-                mt="1"
-                fontSize={{ base: "xs", md: "sm" }}
-                fontWeight="thin"
+                casing="capitalize"
+                fontSize="sm"
+                fontWeight="semibold"
+                letterSpacing="2px"
+                color="white"
               >
-                {event?.description}
+                INVITE LINK
               </Text>
+            </Flex>
+            <Box mt="2">
+              <CopyInput />
+            </Box>
+          </Box>
+          <Flex justify="space-between" mt="8" alignItems="center">
+            <Text
+              casing="capitalize"
+              fontSize="sm"
+              fontWeight="semibold"
+              letterSpacing="2px"
+              color="white"
+            >
+              GUESTS
+            </Text>
+          </Flex>
+          <AudienceList audience={audience} />
+          <Flex justify="space-between" mt="8" alignItems="center">
+            <Text
+              casing="capitalize"
+              fontSize="sm"
+              fontWeight="semibold"
+              letterSpacing="2px"
+              color="white"
+            >
+              HOST & MANAGERS
+            </Text>
+          </Flex>
+          <Flex mt="4" wrap="wrap">
+            {event?.createdBy.map((data, key) => (
+              <HostCard id={id} admin={event?.admin} email={data} key={key} />
+            ))}
+            {window.localStorage.getItem("email") === event?.admin ? (
+              <AddHost />
             ) : (
               <></>
             )}
-          </Box>
-          <Flex direction="column" alignItems="end" experimental_spaceY="1">
-            <Box
-              _hover={{ bg: "whiteAlpha.200" }}
-              rounded="full"
-              p="2"
-              cursor="pointer"
-              onClick={onOpen}
+          </Flex>
+          <FeedbackFormLink />
+          <Flex direction="column" mt="4">
+            <Checkbox
+              w="-webkit-fit-content"
+              onChange={(e) => {
+                setIsListed(e.target.checked);
+                setNewChanges(true);
+              }}
+              isChecked={isListed}
             >
-              <UpdateEventModal />
-              <Settings size="20px" />
-            </Box>
-            <Box display={{ base: "none", md: "block" }}>
-              <Text fontSize="xs" mb="1" color="whiteAlpha.500">
-                Sharable invite link
-              </Text>
-              <CopyInput />
+              Listed publicly
+            </Checkbox>
+            <Checkbox
+              w="-webkit-fit-content"
+              onChange={(e) => {
+                setRegistrationOpen(e.target.checked);
+                setNewChanges(true);
+              }}
+              isChecked={registrationOpen}
+            >
+              Registrations open
+            </Checkbox>
+            <Box>
+              <Button
+                display={newChanges ? "block" : "none"}
+                float="right"
+                size="sm"
+                mt="2"
+                minW="28"
+                onClick={() => {
+                  updateEvent();
+                }}
+                colorScheme="whiteAlpha"
+              >
+                {loading ? <Spinner size="sm" /> : <> Save changes</>}
+              </Button>
             </Box>
           </Flex>
-        </Flex>
-      </Box>
-      <Divider mt="3" color="white" opacity="0.2" />
-      <Box display={{ base: "block", md: "none" }}>
-        <Flex justify="space-between" mt="4" alignItems="center">
-          <Text
-            casing="capitalize"
-            fontSize="sm"
-            fontWeight="semibold"
-            letterSpacing="2px"
-            color="white"
-          >
-            INVITE LINK
-          </Text>
-        </Flex>
-        <Box mt="2">
-          <CopyInput />
-        </Box>
-      </Box>
-      <Flex justify="space-between" mt="8" alignItems="center">
-        <Text
-          casing="capitalize"
-          fontSize="sm"
-          fontWeight="semibold"
-          letterSpacing="2px"
-          color="white"
-        >
-          GUESTS
-        </Text>
-      </Flex>
-      <AudienceList audience={audience} />
-      <Flex justify="space-between" mt="8" alignItems="center">
-        <Text
-          casing="capitalize"
-          fontSize="sm"
-          fontWeight="semibold"
-          letterSpacing="2px"
-          color="white"
-        >
-          HOST & MANAGERS
-        </Text>
-      </Flex>
-      <Flex mt="4" wrap="wrap">
-        {event?.createdBy.map((data, key) => (
-          <HostCard id={id} admin={event?.admin} email={data} key={key} />
-        ))}
-        {window.localStorage.getItem("email") === event?.admin ? (
-          <AddHost />
-        ) : (
-          <></>
-        )}
-      </Flex>
-      <Flex direction="column" mt="4">
-        <Checkbox
-          w="-webkit-fit-content"
-          onChange={(e) => {
-            setIsListed(e.target.checked);
-            setNewChanges(true);
-          }}
-          isChecked={isListed}
-        >
-          Listed publicly
-        </Checkbox>
-        <Checkbox
-          w="-webkit-fit-content"
-          onChange={(e) => {
-            setRegistrationOpen(e.target.checked);
-            setNewChanges(true);
-          }}
-          isChecked={registrationOpen}
-        >
-          Registrations open
-        </Checkbox>
-        <Box>
-          <Button
-            display={newChanges ? "block" : "none"}
-            float="right"
-            size="sm"
-            mt="2"
-            minW="28"
-            onClick={() => {
-              updateEvent();
-            }}
-            colorScheme="whiteAlpha"
-          >
-            {loading ? <Spinner size="sm" /> : <> Save changes</>}
-          </Button>
-        </Box>
-      </Flex>
+        </>
+      ) : (
+        <></>
+      )}
     </StarterTemplate>
   );
 }

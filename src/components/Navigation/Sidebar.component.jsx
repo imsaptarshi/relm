@@ -88,7 +88,9 @@ function Sidebar({ communityId }) {
     {
       name: "Insights",
       isExternal: false,
-      link: "/insights",
+      link: communityId
+        ? `/manage/community/${communityId}/insights`
+        : "/insights",
       Icon: (props) => {
         return <BarChart {...props} />;
       },

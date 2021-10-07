@@ -31,7 +31,6 @@ function Auth({ session }) {
       const user = supabase.auth.user();
 
       if (user) {
-        console.log(user);
         setEmail(user.email);
         if (user.username) {
           setUsername(user?.username);
@@ -121,6 +120,7 @@ function Auth({ session }) {
           </Text>
         </Box>
       </Flex>
+
       <Box
         w={{ base: "100%", md: "65%" }}
         h="100vh"
@@ -134,36 +134,42 @@ function Auth({ session }) {
           <Text color="white" fontWeight="medium" mt="8" fontSize="sm">
             What do we call you?
           </Text>
-          <Input
-            value={username}
-            type="text"
-            onChange={(e) => {
-              setUsername(e.target.value);
-              console.log(username);
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              updateUser(username);
             }}
-            mt="1.5"
-            py="5"
-            rounded="lg"
-            color="white"
-            _hover={{ borderColor: "whiteAlpha.900" }}
-            _focus={{ borderColor: "brand.primary" }}
-            borderColor="whiteAlpha.400"
-            _placeholder={{ color: "whiteAlpha.400" }}
-            placeholder="Your name"
-          />
-          <Button
-            float="right"
-            mt="6"
-            rounded="lg"
-            _focus={{}}
-            _active={{}}
-            rightIcon={
-              loading ? <Spinner size="sm" /> : <ArrowRight size="20px" />
-            }
-            onClick={() => updateUser(username)}
           >
-            Continue
-          </Button>
+            <Input
+              value={username}
+              type="text"
+              onChange={(e) => {
+                setUsername(e.target.value);
+              }}
+              mt="1.5"
+              py="5"
+              rounded="lg"
+              color="white"
+              _hover={{ borderColor: "whiteAlpha.900" }}
+              _focus={{ borderColor: "brand.primary" }}
+              borderColor="whiteAlpha.400"
+              _placeholder={{ color: "whiteAlpha.400" }}
+              placeholder="Your name"
+            />
+            <Button
+              float="right"
+              mt="6"
+              rounded="lg"
+              _focus={{}}
+              _active={{}}
+              rightIcon={
+                loading ? <Spinner size="sm" /> : <ArrowRight size="20px" />
+              }
+              type="submit"
+            >
+              Continue
+            </Button>
+          </form>
         </Box>
       </Box>
     </Flex>

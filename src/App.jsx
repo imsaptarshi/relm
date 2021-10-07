@@ -13,6 +13,8 @@ import NewEvent from "./pages/New/NewEvent.page";
 import ManageEvent from "./pages/Manage/ManageEvent.page";
 import Audience from "./pages/Dashboard/Audience.page";
 import Event from "./pages/Event";
+import Feedback from "./pages/Insights";
+import Insights from "./pages/Dashboard/Insights.page";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -44,8 +46,22 @@ function App() {
             : () => <Auth session={session} />
         }
       />
-      <Route exact path="/signin" component={SignIn} />
+      <Route
+        exact
+        path="/signin"
+        render={
+          localStorage.getItem("email")
+            ? () => {
+                window.location.href = "/home";
+                return <Home />;
+              }
+            : () => {
+                return <SignIn />;
+              }
+        }
+      />
       <Route exact path="/event/:id" component={Event} />
+      <Route exact path="/feedback/:id" component={Feedback} />
       <Route exact path="/auth" render={() => <Auth session={session} />} />
       {localStorage.getItem("email") ? (
         <>
@@ -70,6 +86,12 @@ function App() {
             exact
             path="/manage/community/:id/audience"
             component={Audience}
+          />
+          <Route exact path="/insights" component={Insights} />
+          <Route
+            exact
+            path="/manage/community/:id/insights"
+            component={Insights}
           />
         </>
       ) : (

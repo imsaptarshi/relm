@@ -25,6 +25,10 @@ const addDefaultRoute = (route) => {
         .replace(
           /__DESCRIPTION__/g,
           "Making communities more engaging with events, community analytics and newsletters with Relm"
+        )
+        .replace(
+          /__IMAGE__/g,
+          "https://ik.imagekit.io/86h5mrsjotwk/cover_YoyL6ufRI-k.png?updatedAt=1633614358979"
         );
 
       res.send(data);
@@ -59,6 +63,33 @@ app.get("/event/:id", async (req, res) => {
   });
 });
 
+app.get("/feedback/:id", async (req, res) => {
+  const filePath = path.resolve(__dirname, "./build", "index.html");
+  fs.readFile(filePath, "utf-8", async (err, data) => {
+    if (err) {
+      return console.log(err);
+    }
+    const EventData = await supabase
+      .from("events")
+      .select(
+        "name, description, date, community, image, content, platform, link, isListed, isOpen, createdBy, admin, audience"
+      )
+      .eq("id", req.params.id)
+      .single();
+    data = data
+      .replace(/__TITLE__/g, `${EventData.data.name} | Feedback - Relm`)
+      .replace(
+        /__DESCRIPTION__/g,
+        EventData.data.description.length > 0
+          ? EventData.data.description
+          : "Making communities more engaging with events, community analytics and newsletters with Relm"
+      )
+      .replace(/__IMAGE__/g, EventData.data.image);
+
+    res.send(data);
+  });
+});
+
 addDefaultRoute("/");
 addDefaultRoute("/home");
 addDefaultRoute("/signin");
@@ -72,6 +103,8 @@ addDefaultRoute("/manage/community/:id/new/event");
 addDefaultRoute("/manage/community/:id/events");
 addDefaultRoute("/audience");
 addDefaultRoute("/manage/community/:id/audience");
+addDefaultRoute("/manage/community/:id/insights");
+addDefaultRoute("/insights");
 
 app.use(express.static(path.resolve(__dirname, "./build")));
 app.listen(PORT, () => {

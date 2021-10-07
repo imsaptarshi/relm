@@ -2,6 +2,7 @@
 import { Flex, AspectRatio, Image, Text, Box, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { Calendar, Users } from "react-feather";
+import { formatDate } from "../../Helpers/dateFormatter";
 import { supabase } from "../../Helpers/supabase";
 
 function EventCard({
@@ -13,20 +14,6 @@ function EventCard({
   community,
   audience,
 }) {
-  const Months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
   const [communityData, setCommunityData] = useState(undefined);
 
   useEffect(() => {
@@ -90,9 +77,7 @@ function EventCard({
             mt="1"
           >
             <Calendar size="14px" />
-            <Text>
-              {`${Months[date.month - 1]} ${date.date}, ${date.time} GMT+5:30`}
-            </Text>
+            <Text>{formatDate(date)}</Text>
           </Flex>
           <Flex
             mt="1"

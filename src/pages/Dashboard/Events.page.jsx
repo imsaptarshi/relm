@@ -164,14 +164,48 @@ function Events(props) {
 
         <Flex wrap="wrap" mt="6">
           {active === "Upcoming" ? (
-            upcomingEvents?.map((data, key) => (
-              <EventCard key={key} {...data} />
-            ))
+            upcomingEvents ? (
+              upcomingEvents?.length > 0 ? (
+                upcomingEvents?.map((data, key) => (
+                  <EventCard key={key} {...data} />
+                ))
+              ) : (
+                <Flex
+                  w="full"
+                  color="whiteAlpha.600"
+                  my="10"
+                  justify="center"
+                  textAlign="center"
+                >
+                  🐝 No upcoming events
+                </Flex>
+              )
+            ) : (
+              <></>
+            )
           ) : (
             <></>
           )}
           {active === "Done" ? (
-            doneEvents?.map((data, key) => <EventCard key={key} {...data} />)
+            doneEvents ? (
+              doneEvents?.length > 0 ? (
+                doneEvents?.map((data, key) => (
+                  <EventCard key={key} {...data} />
+                ))
+              ) : (
+                <Flex
+                  w="full"
+                  color="whiteAlpha.600"
+                  my="10"
+                  justify="center"
+                  textAlign="center"
+                >
+                  🐝 No past events
+                </Flex>
+              )
+            ) : (
+              <></>
+            )
           ) : (
             <></>
           )}

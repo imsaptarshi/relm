@@ -121,7 +121,6 @@ function SignIn() {
             type="email"
             onChange={(e) => {
               setEmail(e.target.value);
-              console.log(email);
             }}
             mt="1.5"
             py="5"

@@ -147,7 +147,6 @@ function HostCard({ id, admin, email }) {
       }
 
       setUser(data);
-      console.log(data);
     } catch (error) {
       console.log(error);
     }

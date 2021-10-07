@@ -1,6 +1,6 @@
 import { Table, Box, Thead, Tr, Th, Tbody, Td, Text } from "@chakra-ui/react";
 
-function AudienceList({ audience, communityId }) {
+function AudienceList({ audience, communityId, placeholder }) {
   return (
     <Box border="1px" rounded="xl" mt="4" borderColor="whiteAlpha.400">
       <Table variant="simple" colorScheme="whiteAlpha">
@@ -29,7 +29,7 @@ function AudienceList({ audience, communityId }) {
             ))
           ) : (
             <Text py="2" px="6" color="whiteAlpha.600">
-              No guests
+              {placeholder ? <>{placeholder}</> : <>No guests</>}
             </Text>
           )}
         </Tbody>

@@ -28,6 +28,7 @@ import Showdown from "showdown";
 import "./event.css";
 import EventHostCard from "./EventHostCard.component";
 import Footer from "../../components/Footer/Footer.component";
+import { isUpcoming } from "../../Helpers/isUpcoming";
 
 function Event(props) {
   const id = props.match.params.id;
@@ -377,6 +378,31 @@ function Event(props) {
                         ml={{ md: "10" }}
                       >
                         <Box>
+                          {!isUpcoming(event?.date) ? (
+                            <Box>
+                              <Text opacity="0.5">Event has end</Text>
+                              <Button
+                                _hover={{}}
+                                _active={{ bg: "pink.600" }}
+                                _focus={{}}
+                                bg="brand.primary"
+                                color="white"
+                                px="6"
+                                mt="2"
+                                fontSize="sm"
+                                onClick={() =>
+                                  (window.location.href = `${window.location.origin}/feedback/${id}`)
+                                }
+                                mb={{ base: "4", md: "0" }}
+                                w="full"
+                              >
+                                Send Feedback
+                              </Button>
+                              <Divider my="6" color="white" opacity="0.2" />
+                            </Box>
+                          ) : (
+                            <></>
+                          )}
                           <Box mb="2">
                             <Text fontSize="xl" fontWeight="medium">
                               Join Details :
