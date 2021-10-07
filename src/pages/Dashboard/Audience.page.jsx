@@ -112,8 +112,8 @@ function Audience(props) {
                 const queriedData = [];
                 audience?.forEach((data) => {
                   if (
-                    data.name.startsWith(query) ||
-                    data.email.startsWith(query)
+                    data.name.toLowercase().startsWith(query.toLowerCase()) ||
+                    data.email.toLowercase().startsWith(query.toLowerCase())
                   ) {
                     queriedData.push(data);
                   }

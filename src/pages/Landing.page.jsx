@@ -1,12 +1,22 @@
-import { Box, Text, Flex, Button, Tag, Divider } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Flex,
+  Button,
+  Tag,
+  Divider,
+  Image,
+  AspectRatio,
+} from "@chakra-ui/react";
 import Navigation from "../components/Navigation/Navigation.component";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer/Footer.component";
+import Hero from "../Assets/hero.png";
 
 function LandingPage() {
   return (
     <Flex bg="brand.secondary" justify="center">
-      <Box maxW="1400px">
+      <Box overflowX="clip" maxW="1400px">
         <Flex justify="center" w="full">
           <Box minH="100vh" py="6" px={{ base: "8", lg: "24" }} w="full">
             <Navigation />
@@ -68,6 +78,15 @@ function LandingPage() {
                 </Button>
               </Link>
             </Flex>
+            <AspectRatio
+              mt={{ base: "32", md: "20", lg: "6" }}
+              mb={{ base: "24", md: "16", lg: "0" }}
+              mx="auto"
+              transform={{ base: "scale(1.99)", md: "scale(1.2)", lg: "none" }}
+              ratio={799 / 413}
+            >
+              <Image src={Hero} />
+            </AspectRatio>
           </Box>
         </Flex>
         <Divider opacity="0.1" />
