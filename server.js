@@ -102,6 +102,7 @@ addDefaultRoute("/audience");
 addDefaultRoute("/manage/community/:id/audience");
 addDefaultRoute("/manage/community/:id/insights");
 addDefaultRoute("/insights");
+addDefaultRoute("/static/media/:id");
 
 app.use(express.static(path.resolve(__dirname, "./build")));
 app.listen(PORT, () => {
