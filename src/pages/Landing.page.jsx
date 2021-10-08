@@ -10,7 +10,6 @@ import {
 } from "@chakra-ui/react";
 import Navigation from "../components/Navigation/Navigation.component";
 import Footer from "../components/Footer/Footer.component";
-import Hero from "../Assets/hero.png";
 
 function LandingPage() {
   return (
@@ -84,7 +83,7 @@ function LandingPage() {
               transform={{ base: "scale(1.99)", md: "scale(1.2)", lg: "none" }}
               ratio={799 / 413}
             >
-              <Image src={Hero} />
+              <Image src="https://i.ibb.co/1GbRTcr/hero.png" />
             </AspectRatio>
           </Box>
         </Flex>
