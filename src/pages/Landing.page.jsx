@@ -9,8 +9,8 @@ import {
   AspectRatio,
 } from "@chakra-ui/react";
 import Navigation from "../components/Navigation/Navigation.component";
-import { Link } from "react-router-dom";
 import Footer from "../components/Footer/Footer.component";
+import Hero from "../Assets/hero.png";
 
 function LandingPage() {
   return (
@@ -47,35 +47,35 @@ function LandingPage() {
                   Relm
                 </Text>
               </Text>
-              <Link to="/signin">
-                <Button
-                  _hover={{ transform: "translateY(-1.5px)" }}
-                  _active={{ bg: "pink.600" }}
-                  _focus={{}}
-                  bg="brand.primary"
+
+              <Button
+                _hover={{ transform: "translateY(-1.5px)" }}
+                _active={{ bg: "pink.600" }}
+                _focus={{}}
+                bg="brand.primary"
+                color="white"
+                mt="10"
+                rounded="2xl"
+                fontWeight="bold"
+                fontSize="lg"
+                px="14"
+                py="7"
+                onClick={() => (window.location.href = "/signin")}
+              >
+                Get Into Relm
+                <Tag
+                  position="absolute"
+                  top="-2"
+                  right="-3"
                   color="white"
-                  mt="10"
-                  rounded="2xl"
-                  fontWeight="bold"
-                  fontSize="lg"
-                  px="14"
-                  py="7"
+                  rounded="full"
+                  bg="pink.800"
+                  px="3"
+                  py="1"
                 >
-                  Get Into Realm
-                  <Tag
-                    position="absolute"
-                    top="-2"
-                    right="-3"
-                    color="white"
-                    rounded="full"
-                    bg="pink.800"
-                    px="3"
-                    py="1"
-                  >
-                    beta
-                  </Tag>
-                </Button>
-              </Link>
+                  beta
+                </Tag>
+              </Button>
             </Flex>
             <AspectRatio
               mt={{ base: "32", md: "20", lg: "6" }}
@@ -84,7 +84,7 @@ function LandingPage() {
               transform={{ base: "scale(1.99)", md: "scale(1.2)", lg: "none" }}
               ratio={799 / 413}
             >
-              <Image src="https://i.ibb.co/1GbRTcr/hero.png" />
+              <Image src={Hero} />
             </AspectRatio>
           </Box>
         </Flex>
