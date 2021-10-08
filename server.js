@@ -21,7 +21,7 @@ const addDefaultRoute = (route) => {
         return console.log(err);
       }
       data = data
-        .replace(/__TITLE__/g, "Relm")
+        .replace(/__TITLE__/g, "Relm - Activating your community")
         .replace(
           /__DESCRIPTION__/g,
           "Making communities more engaging with events, community analytics and newsletters with Relm"

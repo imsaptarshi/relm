@@ -1,70 +1,82 @@
-# Getting Started with Create React App
+<div align="center">
+  <img src="./assets/hero.png" width="700"/>
+  <br/><br/>
+  <img alt="Stars" src="https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge">
+  <img alt="Forks" src="https://img.shields.io/github/forks/imsaptarshi/relm?style=for-the-badge">
+  <img alt="Stars" src="https://img.shields.io/github/stars/imsaptarshi/relm?style=for-the-badge">
+</div>
+<br>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 🚀 Relm <sup>(beta)</sup>
 
-## Available Scripts
+> Activating your community
 
-In the project directory, you can run:
+It helps you making your community more engaging with events, analytics, newsletter and much more!
 
-### `yarn start`
+## 📯 Philosophy
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Being a community is all fun with events, meetups and eveything we do together. Relm is the solution to ease up the flow of the communities by providing event management as our core feature, which comes along with insights which helps us being in touch and feed with the community.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+That's why we built Relm, to help communities:
 
-### `yarn test`
+- 🧐 Stay engaged
+- 📕 Get a close insight of members
+- 📰 Discover wonders of being a community
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🗂 Tech Stack
 
-### `yarn build`
+Below is a list of technologies we use at Relm.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<img src="https://shields.io/badge/javascript-gray?logo=javascript&style=for-the-badge">
+<img src="https://shields.io/badge/react-gray?logo=react&style=for-the-badge">
+<img src="https://shields.io/badge/chakra--ui-gray?logo=chakraui&style=for-the-badge">
+<img src="https://shields.io/badge/supabase-gray?logo=supabase&style=for-the-badge">
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Team
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Saptarshi**
+  - [Twitter](https://twitter.com/imsaptarshiii)
+  - [Github](https://github.com/imsaptarshi)
+  - [Instagram](https://www.instagram.com/thesaptarshiii)
+  - [Discord](https://discord.gg/VFfG7UTn5J)
 
-### `yarn eject`
+## ✨Features along with walkthrough
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- **Create Communities 🤗**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    <img src="./assets/creating-community.gif">
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- **Create Events 📆**
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    <img src="./assets/creating-event.gif">
 
-## Learn More
+- **Add/Remove Event Hosts 🧐**
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    <img src="./assets/add-host.gif">
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- **Sharing Your Events 🤝**
 
-### Code Splitting
+    <img src="./assets/sharing-event.gif">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- **Collecting your event insights 📬**
 
-### Analyzing the Bundle Size
+    <img src="./assets/insights.gif">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- **Close registrations for your event 🔐**
 
-### Making a Progressive Web App
+    <img src="./assets/close-registrations.gif">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- **Update your event/community 🔼**
 
-### Advanced Configuration
+    <img src="./assets/update.gif">
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## ❓ How did I actually use Supabase in Relm
 
-### Deployment
+This was my first time using Supabase, though it has been pretty popular among my dev friends I never checked it out, but soon that day one of my friend posted about the Supabase hackathon and hearing about it I was really excited to participate in it and try out Supabase. Let me tell you, Supabase has really broke the roof of awesomeness.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Firstly I used Supabase for user authentication with email(Magic link) and google auth
+- And as planned I used Supabase wholly to structure my database
 
-### `yarn build` fails to minify
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[ISC](LICENSE) © 2021 Saptarshi Basu
