@@ -13,6 +13,8 @@
 
 It helps you making your community more engaging with events, analytics, newsletter and much more!
 
+Check out **Relm** today - https://relm.tech
+
 ## 📯 Philosophy
 
 Being a community is all fun with events, meetups and eveything we do together. Relm is the solution to ease up the flow of the communities by providing event management as our core feature, which comes along with insights which helps us being in touch and feed with the community.
