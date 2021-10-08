@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Logo from "../../Assets/logo.svg";
 import { Image, Flex, Button, Text, Box } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
 import { ArrowRight, User } from "react-feather";
 import { useEffect, useState } from "react";
 import { supabase } from "../../Helpers/supabase";
@@ -56,30 +55,29 @@ function Navigation({ communityId }) {
   };
 
   const SignInButton = () => (
-    <Link to="/signin">
-      <Button
-        bg="alpha.white"
-        color="white"
-        px="6"
-        size="sm"
-        fontSize="xs"
-        fontWeight="bold"
-        border="1px"
-        borderColor="transparent"
-        transitionDuration="200ms"
-        _hover={{
-          bg: "rgba(255, 255, 255, 0.05)",
-          borderColor: "whiteAlpha.200",
-        }}
-        _focus={{}}
-        _active={{ bg: "rgba(255, 255, 255, 0.12)" }}
-      >
-        Sign in
-        <Box ml="1">
-          <ArrowRight size="14px" />
-        </Box>
-      </Button>
-    </Link>
+    <Button
+      bg="alpha.white"
+      color="white"
+      px="6"
+      onClick={() => (window.location.href = "/signin")}
+      size="sm"
+      fontSize="xs"
+      fontWeight="bold"
+      border="1px"
+      borderColor="transparent"
+      transitionDuration="200ms"
+      _hover={{
+        bg: "rgba(255, 255, 255, 0.05)",
+        borderColor: "whiteAlpha.200",
+      }}
+      _focus={{}}
+      _active={{ bg: "rgba(255, 255, 255, 0.12)" }}
+    >
+      Sign in
+      <Box ml="1">
+        <ArrowRight size="14px" />
+      </Box>
+    </Button>
   );
 
   return (
@@ -109,31 +107,30 @@ function Navigation({ communityId }) {
         </Text>
       </Flex>
       {window.localStorage.getItem("email") ? (
-        <Link to="/home">
-          <Button
-            bg="alpha.white"
-            color="white"
-            px="6"
-            size="sm"
-            fontSize="xs"
-            fontWeight="semibold"
-            border="1px"
-            borderColor="transparent"
-            transitionDuration="200ms"
-            _hover={{
-              bg: "rgba(255, 255, 255, 0.05)",
-              borderColor: "whiteAlpha.200",
-            }}
-            _focus={{}}
-            leftIcon={<User size="14px" />}
-            _active={{ bg: "rgba(255, 255, 255, 0.12)" }}
-            whiteSpace="nowrap"
-          >
-            <Text isTruncated overflow="clip" maxW="80px">
-              {user?.username}
-            </Text>
-          </Button>
-        </Link>
+        <Button
+          bg="alpha.white"
+          onClick={() => (window.location.href = "/home")}
+          color="white"
+          px="6"
+          size="sm"
+          fontSize="xs"
+          fontWeight="semibold"
+          border="1px"
+          borderColor="transparent"
+          transitionDuration="200ms"
+          _hover={{
+            bg: "rgba(255, 255, 255, 0.05)",
+            borderColor: "whiteAlpha.200",
+          }}
+          _focus={{}}
+          leftIcon={<User size="14px" />}
+          _active={{ bg: "rgba(255, 255, 255, 0.12)" }}
+          whiteSpace="nowrap"
+        >
+          <Text isTruncated overflow="clip" maxW="80px">
+            {user?.username}
+          </Text>
+        </Button>
       ) : (
         <SignInButton />
       )}
