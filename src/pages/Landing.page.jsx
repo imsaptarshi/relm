@@ -83,7 +83,7 @@ function LandingPage() {
               transform={{ base: "scale(1.99)", md: "scale(1.2)", lg: "none" }}
               ratio={799 / 413}
             >
-              <Image src="https://i.ibb.co/1GbRTcr/hero.png" />
+              <Image src="https://i.ibb.co/1dhvDZ7/hero.png" />
             </AspectRatio>
           </Box>
         </Flex>

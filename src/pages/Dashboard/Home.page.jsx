@@ -97,7 +97,6 @@ function Home() {
 
   const getCommunities = async () => {
     try {
-      console.log(localStorage.getItem("email"));
       const { data, error } = await supabase
         .from("communities")
         .select("id, name, logo,description,audience,events")
@@ -116,7 +115,6 @@ function Home() {
 
   const getUser = async () => {
     try {
-      console.log(localStorage.getItem("email"));
       const { data, error } = await supabase
         .from("users")
         .select("username, avatar_url, email")
@@ -136,7 +134,6 @@ function Home() {
           email: data.email,
         })
       );
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
