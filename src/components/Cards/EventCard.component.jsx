@@ -89,7 +89,9 @@ function EventCard({
             <Users size="14px" />
             <Text>{audience}</Text>
           </Flex>
-          <Text mt="4">{description}</Text>
+          <Text fontSize="sm" mt="4">
+            {description}
+          </Text>
         </Box>
         <Box>
           <Flex mt="4" mb="2" justify="space-between" mr="2">
