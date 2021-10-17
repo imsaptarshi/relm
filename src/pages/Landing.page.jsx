@@ -10,13 +10,20 @@ import {
 } from "@chakra-ui/react";
 import Navigation from "../components/Navigation/Navigation.component";
 import Footer from "../components/Footer/Footer.component";
+import Youtube from "react-youtube-embed";
 
 function LandingPage() {
   return (
-    <Flex bg="brand.secondary" justify="center">
-      <Box overflowX="clip" maxW="1400px">
+    <Flex justify="center">
+      <Box overflowX="clip" w="full" bg="brand.secondary">
         <Flex justify="center" w="full">
-          <Box minH="100vh" py="6" px={{ base: "8", lg: "24" }} w="full">
+          <Box
+            maxW="1400px"
+            minH="100vh"
+            py="6"
+            px={{ base: "8", lg: "24" }}
+            w="full"
+          >
             <Navigation />
             <Flex
               justify="center"
@@ -85,6 +92,16 @@ function LandingPage() {
             >
               <Image src="https://i.ibb.co/1dhvDZ7/hero.png" />
             </AspectRatio>
+          </Box>
+        </Flex>
+
+        <Flex
+          justify="center"
+          py={{ base: "14", md: "16", lg: "20" }}
+          bg="#17181A"
+        >
+          <Box maxW="1400px" w="full" px={{ base: "8", lg: "44" }}>
+            <Youtube id="vYEdKI0BsXQ" />
           </Box>
         </Flex>
         <Divider opacity="0.1" />

@@ -55,7 +55,6 @@ function EventCard({
       p="2"
       rounded="xl"
       w="full"
-      experimental_spaceX="4"
       maxW={{ base: "full", md: "300px" }}
       onClick={() => {
         window.location.href = `/manage/event/${id}`;
@@ -64,7 +63,7 @@ function EventCard({
       <AspectRatio ratio={1920 / 1080} w="full">
         <Image src={image} alt={name} rounded="lg" />
       </AspectRatio>
-      <Flex direction="column" justify="space-between" h="full">
+      <Flex direction="column" justify="space-between" h="full" mx="4">
         <Box>
           <Text fontSize="xl" fontWeight="bold" mt="4">
             {name}
@@ -89,7 +88,7 @@ function EventCard({
             <Users size="14px" />
             <Text>{audience}</Text>
           </Flex>
-          <Text fontSize="sm" mt="4">
+          <Text fontSize="sm" mt="4" noOfLines={2}>
             {description}
           </Text>
         </Box>
