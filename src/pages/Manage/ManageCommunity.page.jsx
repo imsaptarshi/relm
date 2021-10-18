@@ -67,60 +67,6 @@ function ManageCommunity(props) {
     }
   };
 
-  const UpcomingEvents = () => {
-    return (
-      <>
-        <Flex justify="space-between" mt="4" alignItems="center">
-          <Link to={`/manage/community/${id}/events`}>
-            <Text
-              casing="capitalize"
-              fontSize="sm"
-              fontWeight="semibold"
-              letterSpacing="2px"
-              color="white"
-            >
-              UPCOMING EVENTS
-            </Text>
-          </Link>
-          <Link to={`/manage/community/${id}/new/event`}>
-            <Button
-              size="sm"
-              bg="alpha.white"
-              border="1px"
-              borderColor="transparent"
-              leftIcon={<Plus size="18px" />}
-              px="4"
-              _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
-              _focus={{}}
-              _active={{ bg: "whiteAlpha.200" }}
-            >
-              Create
-            </Button>
-          </Link>
-        </Flex>
-
-        {upcomingEvents?.length > 0 ? (
-          upcomingEvents?.map((data, key) => (
-            <Flex wrap="wrap" mt="4">
-              <EventCard key={key} {...data} />
-            </Flex>
-          ))
-        ) : upcomingEvents ? (
-          <Flex
-            color="whiteAlpha.600"
-            my="10"
-            justify="center"
-            textAlign="center"
-          >
-            🐝 No upcoming events
-          </Flex>
-        ) : (
-          <></>
-        )}
-      </>
-    );
-  };
-
   const getCommunity = async () => {
     try {
       console.log(localStorage.getItem("email"));
@@ -201,7 +147,59 @@ function ManageCommunity(props) {
         </Flex>
         <Divider mt="3" color="white" opacity="0.2" />
       </Box>
-      {upcomingEvents ? <UpcomingEvents /> : <></>}
+      {upcomingEvents ? (
+        <>
+          <Flex justify="space-between" mt="4" alignItems="center">
+            <Link to={`/manage/community/${id}/events`}>
+              <Text
+                casing="capitalize"
+                fontSize="sm"
+                fontWeight="semibold"
+                letterSpacing="2px"
+                color="white"
+              >
+                UPCOMING EVENTS
+              </Text>
+            </Link>
+            <Link to={`/manage/community/${id}/new/event`}>
+              <Button
+                size="sm"
+                bg="alpha.white"
+                border="1px"
+                borderColor="transparent"
+                leftIcon={<Plus size="18px" />}
+                px="4"
+                _hover={{ borderColor: "whiteAlpha.200", bg: "whiteAlpha.100" }}
+                _focus={{}}
+                _active={{ bg: "whiteAlpha.200" }}
+              >
+                Create
+              </Button>
+            </Link>
+          </Flex>
+
+          {upcomingEvents?.length > 0 ? (
+            upcomingEvents?.map((data, key) => (
+              <Flex wrap="wrap" mt="4">
+                <EventCard key={key} {...data} />
+              </Flex>
+            ))
+          ) : upcomingEvents ? (
+            <Flex
+              color="whiteAlpha.600"
+              my="10"
+              justify="center"
+              textAlign="center"
+            >
+              🐝 No upcoming events
+            </Flex>
+          ) : (
+            <></>
+          )}
+        </>
+      ) : (
+        <></>
+      )}
     </StarterTemplate>
   );
 }

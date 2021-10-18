@@ -22,7 +22,7 @@ function CommunityCard({ id, name, description, audience, events, logo }) {
       rounded="xl"
       w="full"
       experimental_spaceX="4"
-      maxW="320px"
+      maxW={{ md: "320px" }}
     >
       <AspectRatio ratio={1} minW="20">
         <Image src={logo} rounded="lg" />

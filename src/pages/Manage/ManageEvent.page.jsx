@@ -34,6 +34,7 @@ import { useHistory } from "react-router";
 import UpdateEvent from "../Update/UpdateEvent.page";
 import { formatDate } from "../../Helpers/dateFormatter";
 import { Helmet } from "react-helmet";
+import emailjs from "emailjs-com";
 
 function ManageEvent(props) {
   const id = props.match.params.id;
@@ -47,6 +48,7 @@ function ManageEvent(props) {
   const toast = useToast();
   const [isListed, setIsListed] = useState(false);
   const [registrationOpen, setRegistrationOpen] = useState(false);
+  const [admin, setAdmin] = useState(undefined);
   const [newChanges, setNewChanges] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -55,7 +57,28 @@ function ManageEvent(props) {
   useEffect(() => {
     getEvent();
     getAudience();
-  }, []);
+    if (event) {
+      getAdmin(event);
+    }
+  }, event);
+
+  const getAdmin = async (event) => {
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("username")
+        .eq("email", event.admin)
+        .single();
+
+      if (error) {
+        throw error;
+      }
+
+      setAdmin(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const getAudience = async () => {
     try {
@@ -69,8 +92,6 @@ function ManageEvent(props) {
       }
 
       setAudience(data);
-
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -135,65 +156,54 @@ function ManageEvent(props) {
 
   const AddHost = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const AddHostModal = () => {
-      return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent pb="3" bg="#1D2023" color="white">
-            <ModalHeader>Add host</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Input
-                id="email"
-                type="email"
-                _placeholder={{ color: "whiteAlpha.500" }}
-                placeholder="Email"
-                _focus={{ borderColor: "brand.primary" }}
-              />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                bg="brand.primary"
-                _hover={{}}
-                _active={{}}
-                onClick={async () => {
-                  if (validateEmail(document.getElementById("email").value)) {
-                    createdBy.push(document.getElementById("email").value);
+    const [addHostLoading, setAddHostLoading] = useState(false);
+    const [email, setEmail] = useState("");
 
-                    try {
-                      const { error } = await supabase
-                        .from("events")
-                        .upsert(
-                          { id, createdBy: [...new Set(createdBy)] },
-                          { returning: "minimal" }
-                        );
+    const addHost = async () => {
+      if (validateEmail(email)) {
+        createdBy.push(email);
 
-                      if (error) {
-                        throw error;
-                      }
-                    } catch (error) {
-                      console.log(error);
-                    }
-                    onClose();
-                    window.location.reload();
-                  } else {
-                    toast({
-                      title: "Error",
-                      position: "bottom",
-                      description: "Enter a valid email address",
-                      status: "error",
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-              >
-                Add
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      );
+        try {
+          setAddHostLoading(true);
+          const { error } = await supabase
+            .from("events")
+            .upsert(
+              { id, createdBy: [...new Set(createdBy)] },
+              { returning: "minimal" }
+            );
+
+          if (error) {
+            throw error;
+          }
+
+          await emailjs.send(
+            process.env.REACT_APP_EMAIL_SERVICE_ID,
+            "event_invitation",
+            {
+              to_email: email,
+              event_name: event?.name,
+              from_name: "Relm",
+              event_admin: admin?.username,
+              event_link: window.location.href,
+            },
+            process.env.REACT_APP_EMAIL_USER_ID
+          );
+        } catch (error) {
+          console.log(error);
+        }
+        setAddHostLoading(false);
+        onClose();
+        window.location.reload();
+      } else {
+        toast({
+          title: "Error",
+          position: "bottom",
+          description: "Enter a valid email address",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
     };
 
     return (
@@ -218,7 +228,38 @@ function ManageEvent(props) {
         experimental_spaceX="4"
         maxW={{ base: "full", md: "280px" }}
       >
-        <AddHostModal />
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent pb="2" bg="#1D2023" color="white">
+            <ModalHeader>Add host</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Input
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                type="email"
+                _placeholder={{ color: "whiteAlpha.500" }}
+                placeholder="Email"
+                _focus={{ borderColor: "brand.primary" }}
+              />
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                size="sm"
+                bg="brand.primary"
+                leftIcon={
+                  addHostLoading ? <Spinner size="sm" /> : <Plus size="18px" />
+                }
+                _hover={{}}
+                _active={{}}
+                onClick={addHost}
+              >
+                Add
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Plus />
       </Flex>
     );

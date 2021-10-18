@@ -16,7 +16,7 @@ function StarterTemplate({ children, communityId }) {
         <Sidebar communityId={communityId} />
       </Box>
       <Box
-        p={{ base: "8", md: "10" }}
+        p={{ base: "5", md: "10" }}
         bg="brand.secondary"
         w="full"
         minH="100vh"
@@ -24,7 +24,7 @@ function StarterTemplate({ children, communityId }) {
       >
         <Flex
           display={{ base: "flex", md: "none" }}
-          m="-4"
+          m="-2"
           justify="space-between"
           mb="4"
           alignItems="center"

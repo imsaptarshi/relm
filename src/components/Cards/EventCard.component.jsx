@@ -93,7 +93,7 @@ function EventCard({
           </Text>
         </Box>
         <Box>
-          <Flex mt="4" mb="2" justify="space-between" mr="2">
+          <Flex mt="4" mb="2" justify="space-between" mx="-2">
             {communityData ? (
               <Flex alignItems="center" experimental_spaceX="2">
                 <Image
