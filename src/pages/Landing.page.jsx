@@ -14,6 +14,7 @@ import Youtube from "react-youtube-embed";
 import loadImage from "../Cache/imageLoader";
 import React from "react";
 import Loading from "./Loading.page";
+import { Helmet } from "react-helmet";
 
 function LandingPage() {
   const SuspenseImage = (props) => {
@@ -24,6 +25,9 @@ function LandingPage() {
   return (
     <React.Suspense fallback={<Loading />}>
       <Flex justify="center">
+        <Helmet>
+          <title>Relm - Activating your community</title>
+        </Helmet>
         <Box overflowX="clip" w="full" bg="brand.secondary">
           <Flex justify="center" w="full">
             <Box

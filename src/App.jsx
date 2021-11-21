@@ -15,6 +15,7 @@ import Audience from "./pages/Dashboard/Audience.page";
 import Event from "./pages/Event";
 import Feedback from "./pages/Insights";
 import Insights from "./pages/Dashboard/Insights.page";
+import Wiki from "./pages/Wiki.page";
 
 function App() {
   const [session, setSession] = useState(undefined);
@@ -62,6 +63,7 @@ function App() {
       />
       <Route exact path="/event/:id" component={Event} />
       <Route exact path="/feedback/:id" component={Feedback} />
+      <Route exact path="/wiki" component={Wiki} />
       <Route exact path="/auth" render={() => <Auth session={session} />} />
       {localStorage.getItem("email") ? (
         <>
