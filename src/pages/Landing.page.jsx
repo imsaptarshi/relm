@@ -15,6 +15,7 @@ import loadImage from "../Cache/imageLoader";
 import React from "react";
 import Loading from "./Loading.page";
 import { Helmet } from "react-helmet";
+import Hero from "../Assets/hero.png";
 
 function LandingPage() {
   const SuspenseImage = (props) => {
@@ -107,7 +108,7 @@ function LandingPage() {
                 }}
                 ratio={799 / 413}
               >
-                <SuspenseImage src="https://i.ibb.co/1dhvDZ7/hero.png" />
+                <SuspenseImage src={Hero} />
               </AspectRatio>
             </Box>
           </Flex>
